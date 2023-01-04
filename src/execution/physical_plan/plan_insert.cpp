@@ -11,7 +11,7 @@ namespace duckdb {
 
 bool PhysicalPlanGenerator::PreserveInsertionOrder(ClientContext &context, PhysicalOperator &plan) {
 	auto &config = DBConfig::GetConfig(context);
-	if (!config.options.preserve_insertion_order) {
+	if (!config.dbConfigOptions.preserve_insertion_order) {
 		// preserving insertion order is disabled by config
 		return false;
 	}

@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "duckdb/main/config.hpp"
-#include "duckdb/main/valid_checker.hpp"
 #include "duckdb/common/winapi.hpp"
+#include "duckdb/main/config.hpp"
 #include "duckdb/main/extension.hpp"
+#include "duckdb/main/valid_checker.hpp"
 
 namespace duckdb {
 class StorageManager;
@@ -29,7 +29,7 @@ public:
 	DUCKDB_API DatabaseInstance();
 	DUCKDB_API ~DatabaseInstance();
 
-	DBConfig config;
+	DBConfig dbConfig;
 
 public:
 	DUCKDB_API StorageManager &GetStorageManager();
@@ -56,7 +56,7 @@ private:
 	void Configure(DBConfig &config);
 
 private:
-	unique_ptr<StorageManager> storage;
+	unique_ptr<StorageManager> storageManager;
 	unique_ptr<Catalog> catalog;
 	unique_ptr<TransactionManager> transaction_manager;
 	unique_ptr<TaskScheduler> scheduler;
@@ -77,7 +77,7 @@ public:
 	DUCKDB_API ~DuckDB();
 
 	//! Reference to the actual database instance
-	shared_ptr<DatabaseInstance> instance;
+	shared_ptr<DatabaseInstance> databaseInstance;
 
 public:
 	template <class T>
@@ -87,7 +87,7 @@ public:
 			return;
 		}
 		extension.Load(*this);
-		instance->SetExtensionLoaded(extension.Name());
+		databaseInstance->SetExtensionLoaded(extension.Name());
 	}
 
 	DUCKDB_API FileSystem &GetFileSystem();

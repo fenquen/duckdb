@@ -544,7 +544,7 @@ void FSSTStorage::StringScanPartial(ColumnSegment &segment, ColumnScanState &sta
 	bool enable_fsst_vectors;
 	if (ALLOW_FSST_VECTORS) {
 		auto &config = DBConfig::GetConfig(segment.db);
-		enable_fsst_vectors = config.options.enable_fsst_vectors;
+		enable_fsst_vectors = config.dbConfigOptions.enable_fsst_vectors;
 	} else {
 		enable_fsst_vectors = false;
 	}

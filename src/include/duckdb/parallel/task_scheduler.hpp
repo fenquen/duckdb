@@ -16,70 +16,86 @@
 
 namespace duckdb {
 
-struct ConcurrentQueue;
-struct QueueProducerToken;
-class ClientContext;
-class DatabaseInstance;
-class TaskScheduler;
+    struct ConcurrentQueue;
+    struct QueueProducerToken;
 
-struct SchedulerThread;
+    class ClientContext;
 
-struct ProducerToken {
-	ProducerToken(TaskScheduler &scheduler, unique_ptr<QueueProducerToken> token);
-	~ProducerToken();
+    class DatabaseInstance;
 
-	TaskScheduler &scheduler;
-	unique_ptr<QueueProducerToken> token;
-	mutex producer_lock;
-};
+    class TaskScheduler;
+
+    struct SchedulerThread;
+
+    struct ProducerToken {
+        ProducerToken(TaskScheduler &scheduler, unique_ptr<QueueProducerToken> token);
+
+        ~ProducerToken();
+
+        TaskScheduler &scheduler;
+        unique_ptr<QueueProducerToken> token;
+        mutex producer_lock;
+    };
 
 //! The TaskScheduler is responsible for managing tasks and threads
-class TaskScheduler {
-	// timeout for semaphore wait, default 5ms
-	constexpr static int64_t TASK_TIMEOUT_USECS = 5000;
+    class TaskScheduler {
+        // timeout for semaphore wait, default 5ms
+        constexpr static int64_t TASK_TIMEOUT_USECS = 5000;
 
-public:
-	TaskScheduler(DatabaseInstance &db);
-	~TaskScheduler();
+    public:
+        TaskScheduler(DatabaseInstance &db);
 
-	static TaskScheduler &GetScheduler(ClientContext &context);
-	static TaskScheduler &GetScheduler(DatabaseInstance &db);
+        ~TaskScheduler();
 
-	unique_ptr<ProducerToken> CreateProducer();
-	//! Schedule a task to be executed by the task scheduler
-	void ScheduleTask(ProducerToken &producer, unique_ptr<Task> task);
-	//! Fetches a task from a specific producer, returns true if successful or false if no tasks were available
-	bool GetTaskFromProducer(ProducerToken &token, unique_ptr<Task> &task);
-	//! Run tasks forever until "marker" is set to false, "marker" must remain valid until the thread is joined
-	void ExecuteForever(atomic<bool> *marker);
-	//! Run tasks until `marker` is set to false, `max_tasks` have been completed, or until there are no more tasks
-	//! available. Returns the number of tasks that were completed.
-	idx_t ExecuteTasks(atomic<bool> *marker, idx_t max_tasks);
-	//! Run tasks until `max_tasks` have been completed, or until there are no more tasks available
-	void ExecuteTasks(idx_t max_tasks);
+        static TaskScheduler &GetScheduler(ClientContext &context);
 
-	//! Sets the amount of active threads executing tasks for the system; n-1 background threads will be launched.
-	//! The main thread will also be used for execution
-	void SetThreads(int32_t n);
-	//! Returns the number of threads
-	int32_t NumberOfThreads();
+        static TaskScheduler &GetScheduler(DatabaseInstance &db);
 
-	//! Send signals to n threads, signalling for them to wake up and attempt to execute a task
-	void Signal(idx_t n);
+        unique_ptr<ProducerToken> CreateProducer();
 
-private:
-	void SetThreadsInternal(int32_t n);
+        //! Schedule a task to be executed by the task scheduler
+        void ScheduleTask(ProducerToken &producer, unique_ptr<Task> task);
 
-private:
-	DatabaseInstance &db;
-	//! The task queue
-	unique_ptr<ConcurrentQueue> queue;
-	//! Lock for modifying the thread count
-	mutex thread_lock;
-	//! The active background threads of the task scheduler
-	vector<unique_ptr<SchedulerThread>> threads;
-	//! Markers used by the various threads, if the markers are set to "false" the thread execution is stopped
-	vector<unique_ptr<atomic<bool>>> markers;
-};
+        //! Fetches a task from a specific producer, returns true if successful or false if no tasks were available
+        bool GetTaskFromProducer(ProducerToken &token, unique_ptr<Task> &task);
+
+        //! Run tasks forever until "marker" is set to false, "marker" must remain valid until the thread is joined
+        void ExecuteForever(atomic<bool> *marker);
+
+        //! Run tasks until `marker` is set to false, `max_tasks` have been completed, or until there are no more tasks
+        //! available. Returns the number of tasks that were completed.
+        idx_t ExecuteTasks(atomic<bool> *marker, idx_t max_tasks);
+
+        //! Run tasks until `max_tasks` have been completed, or until there are no more tasks available
+        void ExecuteTasks(idx_t max_tasks);
+
+        //! Sets the amount of active threads executing tasks for the system; n-1 background threads will be launched.
+        //! The main thread will also be used for execution
+        void SetThreads(int32_t n);
+
+        //! Returns the number of threads
+        int32_t NumberOfThreads();
+
+        //! Send signals to n threads, signalling for them to wake up and attempt to execute a task
+        void Signal(idx_t n);
+
+    private:
+        void SetThreadsInternal(int32_t n);
+
+    private:
+        DatabaseInstance &db;
+
+        //! The task queue
+        unique_ptr<ConcurrentQueue> queue;
+
+        //! Lock for modifying the thread count
+        mutex thread_lock;
+
+        //! The active background threads of the task scheduler
+        vector<unique_ptr<SchedulerThread>> threads;
+
+        //! Markers used by the various threads, if the markers are set to "false" the thread execution is stopped
+        vector<unique_ptr<atomic<bool>>> markers;
+    };
 
 } // namespace duckdb

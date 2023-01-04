@@ -61,13 +61,13 @@ void Command::RestartDatabase(ExecuteContext &context, Connection *&connection, 
 	vector<unique_ptr<SQLStatement>> statements;
 	bool query_fail = false;
 	try {
-		statements = connection->context->ParseStatements(sql_query);
+		statements = connection->clientContext->ParseStatements(sql_query);
 	} catch (...) {
 		query_fail = true;
 	}
 	bool is_any_transaction_active = false;
-	for (auto &conn : connection->context->db->GetConnectionManager().connections) {
-		if (conn.first->transaction.HasActiveTransaction()) {
+	for (auto &conn : connection->clientContext->databaseInstance->GetConnectionManager().connections) {
+		if (conn.first->transactionContext.HasActiveTransaction()) {
 			is_any_transaction_active = true;
 		}
 	}
@@ -258,27 +258,27 @@ void RestartCommand::ExecuteInternal(ExecuteContext &context) const {
 		throw std::runtime_error("Cannot restart database in parallel");
 	}
 	// We save the main connection configurations to pass it to the new connection
-	runner.config->options = runner.con->context->db->config.options;
-	auto client_config = runner.con->context->config;
-	auto catalog_search_paths = runner.con->context->client_data->catalog_search_path->GetSetPaths();
+	runner.config->dbConfigOptions = runner.con->clientContext->databaseInstance->dbConfig.dbConfigOptions;
+	auto client_config = runner.con->clientContext->config;
+	auto catalog_search_paths = runner.con->clientContext->client_data->catalog_search_path->GetSetPaths();
 	string low_query_writer_path;
-	if (runner.con->context->client_data->log_query_writer) {
-		low_query_writer_path = runner.con->context->client_data->log_query_writer->path;
+	if (runner.con->clientContext->client_data->log_query_writer) {
+		low_query_writer_path = runner.con->clientContext->client_data->log_query_writer->path;
 	}
 
-	auto prepared_statements = move(runner.con->context->client_data->prepared_statements);
+	auto prepared_statements = move(runner.con->clientContext->client_data->prepared_statements);
 
 	runner.LoadDatabase(runner.dbpath);
 
-	runner.con->context->config = client_config;
+	runner.con->clientContext->config = client_config;
 
-	runner.con->context->client_data->catalog_search_path->Set(catalog_search_paths);
+	runner.con->clientContext->client_data->catalog_search_path->Set(catalog_search_paths);
 	if (!low_query_writer_path.empty()) {
-		runner.con->context->client_data->log_query_writer =
-		    make_unique<BufferedFileWriter>(FileSystem::GetFileSystem(*runner.con->context), low_query_writer_path,
-		                                    1 << 1 | 1 << 5, runner.con->context->client_data->file_opener.get());
+		runner.con->clientContext->client_data->log_query_writer =
+		    make_unique<BufferedFileWriter>(FileSystem::GetFileSystem(*runner.con->clientContext), low_query_writer_path,
+		                                    1 << 1 | 1 << 5, runner.con->clientContext->client_data->file_opener.get());
 	}
-	runner.con->context->client_data->prepared_statements = move(prepared_statements);
+	runner.con->clientContext->client_data->prepared_statements = move(prepared_statements);
 }
 
 void Statement::ExecuteInternal(ExecuteContext &context) const {

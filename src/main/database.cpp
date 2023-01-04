@@ -15,327 +15,341 @@
 #include "duckdb/main/error_manager.hpp"
 
 #ifndef DUCKDB_NO_THREADS
+
 #include "duckdb/common/thread.hpp"
+
 #endif
 
 namespace duckdb {
 
-DBConfig::DBConfig() {
-	compression_functions = make_unique<CompressionFunctionSet>();
-	replacement_opens.push_back(ExtensionPrefixReplacementOpen());
-	cast_functions = make_unique<CastFunctionSet>();
-	error_manager = make_unique<ErrorManager>();
-}
+    DBConfig::DBConfig() {
+        compression_functions = make_unique<CompressionFunctionSet>();
+        replacement_opens.push_back(ExtensionPrefixReplacementOpen());
+        cast_functions = make_unique<CastFunctionSet>();
+        error_manager = make_unique<ErrorManager>();
+    }
 
-DBConfig::DBConfig(std::unordered_map<string, string> &config_dict, bool read_only) {
-	compression_functions = make_unique<CompressionFunctionSet>();
-	if (read_only) {
-		options.access_mode = AccessMode::READ_ONLY;
-	}
-	for (auto &kv : config_dict) {
-		string key = kv.first;
-		string val = kv.second;
-		auto config_property = DBConfig::GetOptionByName(key);
-		if (!config_property) {
-			throw InvalidInputException("Unrecognized configuration property \"%s\"", key);
-		}
-		auto opt_val = Value(val);
-		DBConfig::SetOption(*config_property, opt_val);
-	}
-}
+    DBConfig::DBConfig(std::unordered_map<string, string> &config_dict, bool read_only) {
+        compression_functions = make_unique<CompressionFunctionSet>();
+        if (read_only) {
+            dbConfigOptions.access_mode = AccessMode::READ_ONLY;
+        }
+        for (auto &kv: config_dict) {
+            string key = kv.first;
+            string val = kv.second;
+            auto config_property = DBConfig::GetOptionByName(key);
+            if (!config_property) {
+                throw InvalidInputException("Unrecognized configuration property \"%s\"", key);
+            }
+            auto opt_val = Value(val);
+            DBConfig::SetOption(*config_property, opt_val);
+        }
+    }
 
-DBConfig::~DBConfig() {
-}
+    DBConfig::~DBConfig() {
+    }
 
-DatabaseInstance::DatabaseInstance() {
-}
+    DatabaseInstance::DatabaseInstance() {
+    }
 
-DatabaseInstance::~DatabaseInstance() {
-	if (Exception::UncaughtException()) {
-		return;
-	}
+    DatabaseInstance::~DatabaseInstance() {
+        if (Exception::UncaughtException()) {
+            return;
+        }
 
-	// shutting down: attempt to checkpoint the database
-	// but only if we are not cleaning up as part of an exception unwind
-	try {
-		auto &storage = StorageManager::GetStorageManager(*this);
-		if (!storage.InMemory()) {
-			auto &config = storage.db.config;
-			if (!config.options.checkpoint_on_shutdown) {
-				return;
-			}
-			storage.CreateCheckpoint(true);
-		}
-	} catch (...) {
-	}
-}
+        // shutting down: attempt to checkpoint the database
+        // but only if we are not cleaning up as part of an exception unwind
+        try {
+            auto &storage = StorageManager::GetStorageManager(*this);
+            if (!storage.InMemory()) {
+                auto &config = storage.databaseInstance.dbConfig;
+                if (!config.dbConfigOptions.checkpoint_on_shutdown) {
+                    return;
+                }
+                storage.CreateCheckpoint(true);
+            }
+        } catch (...) {
+        }
+    }
 
-BufferManager &BufferManager::GetBufferManager(DatabaseInstance &db) {
-	return *db.GetStorageManager().buffer_manager;
-}
+    BufferManager &BufferManager::GetBufferManager(DatabaseInstance &db) {
+        return *db.GetStorageManager().buffer_manager;
+    }
 
-DatabaseInstance &DatabaseInstance::GetDatabase(ClientContext &context) {
-	return *context.db;
-}
+    DatabaseInstance &DatabaseInstance::GetDatabase(ClientContext &context) {
+        return *context.databaseInstance;
+    }
 
-StorageManager &StorageManager::GetStorageManager(DatabaseInstance &db) {
-	return db.GetStorageManager();
-}
+    StorageManager &StorageManager::GetStorageManager(DatabaseInstance &db) {
+        return db.GetStorageManager();
+    }
 
-Catalog &Catalog::GetCatalog(DatabaseInstance &db) {
-	return db.GetCatalog();
-}
+    Catalog &Catalog::GetCatalog(DatabaseInstance &db) {
+        return db.GetCatalog();
+    }
 
-FileSystem &FileSystem::GetFileSystem(DatabaseInstance &db) {
-	return db.GetFileSystem();
-}
+    FileSystem &FileSystem::GetFileSystem(DatabaseInstance &db) {
+        return db.GetFileSystem();
+    }
 
-DBConfig &DBConfig::GetConfig(DatabaseInstance &db) {
-	return db.config;
-}
+    DBConfig &DBConfig::GetConfig(DatabaseInstance &db) {
+        return db.dbConfig;
+    }
 
-ClientConfig &ClientConfig::GetConfig(ClientContext &context) {
-	return context.config;
-}
+    ClientConfig &ClientConfig::GetConfig(ClientContext &context) {
+        return context.config;
+    }
 
-const DBConfig &DBConfig::GetConfig(const DatabaseInstance &db) {
-	return db.config;
-}
+    const DBConfig &DBConfig::GetConfig(const DatabaseInstance &db) {
+        return db.dbConfig;
+    }
 
-const ClientConfig &ClientConfig::GetConfig(const ClientContext &context) {
-	return context.config;
-}
+    const ClientConfig &ClientConfig::GetConfig(const ClientContext &context) {
+        return context.config;
+    }
 
-TransactionManager &TransactionManager::Get(ClientContext &context) {
-	return TransactionManager::Get(DatabaseInstance::GetDatabase(context));
-}
+    TransactionManager &TransactionManager::Get(ClientContext &context) {
+        return TransactionManager::Get(DatabaseInstance::GetDatabase(context));
+    }
 
-TransactionManager &TransactionManager::Get(DatabaseInstance &db) {
-	return db.GetTransactionManager();
-}
+    TransactionManager &TransactionManager::Get(DatabaseInstance &db) {
+        return db.GetTransactionManager();
+    }
 
-ConnectionManager &ConnectionManager::Get(DatabaseInstance &db) {
-	return db.GetConnectionManager();
-}
+    ConnectionManager &ConnectionManager::Get(DatabaseInstance &databaseInstance) {
+        return databaseInstance.GetConnectionManager();
+    }
 
-ConnectionManager &ConnectionManager::Get(ClientContext &context) {
-	return ConnectionManager::Get(DatabaseInstance::GetDatabase(context));
-}
+    ConnectionManager &ConnectionManager::Get(ClientContext &context) {
+        return ConnectionManager::Get(DatabaseInstance::GetDatabase(context));
+    }
 
-void DatabaseInstance::Initialize(const char *database_path, DBConfig *user_config) {
-	DBConfig default_config;
-	DBConfig *config_ptr = &default_config;
-	if (user_config) {
-		config_ptr = user_config;
-	}
+    void DatabaseInstance::Initialize(const char *database_path, DBConfig *user_config) {
+        DBConfig default_config;
+        DBConfig *config_ptr = &default_config;
+        if (user_config) {
+            config_ptr = user_config;
+        }
 
-	if (config_ptr->options.temporary_directory.empty() && database_path) {
-		// no directory specified: use default temp path
-		config_ptr->options.temporary_directory = string(database_path) + ".tmp";
+        if (config_ptr->dbConfigOptions.temporary_directory.empty() && database_path) {
+            // no directory specified: use default temp path
+            config_ptr->dbConfigOptions.temporary_directory = string(database_path) + ".tmp";
 
-		// special treatment for in-memory mode
-		if (strcmp(database_path, ":memory:") == 0) {
-			config_ptr->options.temporary_directory = ".tmp";
-		}
-	}
+            // special treatment for in-memory mode
+            if (strcmp(database_path, ":memory:") == 0) {
+                config_ptr->dbConfigOptions.temporary_directory = ".tmp";
+            }
+        }
 
-	if (database_path) {
-		config_ptr->options.database_path = database_path;
-	} else {
-		config_ptr->options.database_path.clear();
-	}
+        if (database_path) {
+            config_ptr->dbConfigOptions.database_path = database_path;
+        } else {
+            config_ptr->dbConfigOptions.database_path.clear();
+        }
 
-	for (auto &open : config_ptr->replacement_opens) {
-		if (open.pre_func) {
-			open.data = open.pre_func(*config_ptr, open.static_data.get());
-			if (open.data) {
-				break;
-			}
-		}
-	}
-	Configure(*config_ptr);
+        for (auto &open: config_ptr->replacement_opens) {
+            if (open.pre_func) {
+                open.data = open.pre_func(*config_ptr, open.static_data.get());
+                if (open.data) {
+                    break;
+                }
+            }
+        }
 
-	if (user_config && !user_config->options.use_temporary_directory) {
-		// temporary directories explicitly disabled
-		config.options.temporary_directory = string();
-	}
+        Configure(*config_ptr);
 
-	// TODO: Support an extension here, to generate different storage managers
-	// depending on the DB path structure/prefix.
-	const string dbPath = config.options.database_path;
-	storage = make_unique<SingleFileStorageManager>(*this, dbPath, config.options.access_mode == AccessMode::READ_ONLY);
+        if (user_config && !user_config->dbConfigOptions.use_temporary_directory) {
+            // temporary directories explicitly disabled
+            dbConfig.dbConfigOptions.temporary_directory = string();
+        }
 
-	catalog = make_unique<Catalog>(*this);
-	transaction_manager = make_unique<TransactionManager>(*this);
-	scheduler = make_unique<TaskScheduler>(*this);
-	object_cache = make_unique<ObjectCache>();
-	connection_manager = make_unique<ConnectionManager>();
+        // TODO: Support an extension here, to generate different storage managers
+        // depending on the DB path structure/prefix.
+        const string dbPath = dbConfig.dbConfigOptions.database_path;
+        storageManager = make_unique<SingleFileStorageManager>(*this,
+                                                               dbPath,
+                                                               dbConfig.dbConfigOptions.access_mode == AccessMode::READ_ONLY);
 
-	// initialize the database
-	storage->Initialize();
+        catalog = make_unique<Catalog>(*this);
+        transaction_manager = make_unique<TransactionManager>(*this);
+        scheduler = make_unique<TaskScheduler>(*this);
+        object_cache = make_unique<ObjectCache>();
+        connection_manager = make_unique<ConnectionManager>();
 
-	// only increase thread count after storage init because we get races on catalog otherwise
-	scheduler->SetThreads(config.options.maximum_threads);
+        // initialize the database
+        storageManager->Initialize();
 
-	for (auto &open : config.replacement_opens) {
-		if (open.post_func && open.data) {
-			open.post_func(*this, open.data.get());
-			break;
-		}
-	}
-}
+        // only increase thread count after storage init because we get races on catalog otherwise
+        scheduler->SetThreads(dbConfig.dbConfigOptions.maximum_threads);
 
-DuckDB::DuckDB(const char *path, DBConfig *new_config) : instance(make_shared<DatabaseInstance>()) {
-	instance->Initialize(path, new_config);
-	if (instance->config.options.load_extensions) {
-		ExtensionHelper::LoadAllExtensions(*this);
-	}
-}
+        for (auto &open: dbConfig.replacement_opens) {
+            if (open.post_func && open.data) {
+                open.post_func(*this, open.data.get());
+                break;
+            }
+        }
+    }
 
-DuckDB::DuckDB(const string &path, DBConfig *config) : DuckDB(path.c_str(), config) {
-}
+    DuckDB::DuckDB(const char *path,
+                   DBConfig *new_config) : databaseInstance(make_shared<DatabaseInstance>()) {
+        databaseInstance->Initialize(path, new_config);
+        if (databaseInstance->dbConfig.dbConfigOptions.load_extensions) {
+            ExtensionHelper::LoadAllExtensions(*this);
+        }
+    }
 
-DuckDB::DuckDB(DatabaseInstance &instance_p) : instance(instance_p.shared_from_this()) {
-}
+    DuckDB::DuckDB(const string &path,
+                   DBConfig *config) : DuckDB(path.c_str(), config) {
+    }
 
-DuckDB::~DuckDB() {
-}
+    DuckDB::DuckDB(DatabaseInstance &instance_p) : databaseInstance(instance_p.shared_from_this()) {
+    }
 
-StorageManager &DatabaseInstance::GetStorageManager() {
-	return *storage;
-}
+    DuckDB::~DuckDB() {
+    }
 
-Catalog &DatabaseInstance::GetCatalog() {
-	return *catalog;
-}
+    StorageManager &DatabaseInstance::GetStorageManager() {
+        return *storageManager;
+    }
 
-TransactionManager &DatabaseInstance::GetTransactionManager() {
-	return *transaction_manager;
-}
+    Catalog &DatabaseInstance::GetCatalog() {
+        return *catalog;
+    }
 
-TaskScheduler &DatabaseInstance::GetScheduler() {
-	return *scheduler;
-}
+    TransactionManager &DatabaseInstance::GetTransactionManager() {
+        return *transaction_manager;
+    }
 
-ObjectCache &DatabaseInstance::GetObjectCache() {
-	return *object_cache;
-}
+    TaskScheduler &DatabaseInstance::GetScheduler() {
+        return *scheduler;
+    }
 
-FileSystem &DatabaseInstance::GetFileSystem() {
-	return *config.file_system;
-}
+    ObjectCache &DatabaseInstance::GetObjectCache() {
+        return *object_cache;
+    }
 
-ConnectionManager &DatabaseInstance::GetConnectionManager() {
-	return *connection_manager;
-}
+    FileSystem &DatabaseInstance::GetFileSystem() {
+        return *dbConfig.file_system;
+    }
 
-FileSystem &DuckDB::GetFileSystem() {
-	return instance->GetFileSystem();
-}
+    ConnectionManager &DatabaseInstance::GetConnectionManager() {
+        return *connection_manager;
+    }
 
-Allocator &Allocator::Get(ClientContext &context) {
-	return Allocator::Get(*context.db);
-}
+    FileSystem &DuckDB::GetFileSystem() {
+        return databaseInstance->GetFileSystem();
+    }
 
-Allocator &Allocator::Get(DatabaseInstance &db) {
-	return *db.config.allocator;
-}
+    Allocator &Allocator::Get(ClientContext &context) {
+        return Allocator::Get(*context.databaseInstance);
+    }
 
-void DatabaseInstance::Configure(DBConfig &new_config) {
-	config.options = new_config.options;
-	if (config.options.access_mode == AccessMode::UNDEFINED) {
-		config.options.access_mode = AccessMode::READ_WRITE;
-	}
-	if (new_config.file_system) {
-		config.file_system = move(new_config.file_system);
-	} else {
-		config.file_system = make_unique<VirtualFileSystem>();
-	}
-	if (config.options.maximum_memory == (idx_t)-1) {
-		auto memory = FileSystem::GetAvailableMemory();
-		if (memory != DConstants::INVALID_INDEX) {
-			config.options.maximum_memory = memory * 8 / 10;
-		}
-	}
-	if (new_config.options.maximum_threads == (idx_t)-1) {
+    Allocator &Allocator::Get(DatabaseInstance &db) {
+        return *db.dbConfig.allocator;
+    }
+
+    void DatabaseInstance::Configure(DBConfig &new_config) {
+        dbConfig.dbConfigOptions = new_config.dbConfigOptions;
+        if (dbConfig.dbConfigOptions.access_mode == AccessMode::UNDEFINED) {
+            dbConfig.dbConfigOptions.access_mode = AccessMode::READ_WRITE;
+        }
+
+        if (new_config.file_system) {
+            dbConfig.file_system = move(new_config.file_system);
+        } else {
+            dbConfig.file_system = make_unique<VirtualFileSystem>();
+        }
+
+        if (dbConfig.dbConfigOptions.maximum_memory == (idx_t) -1) {
+            auto memory = FileSystem::GetAvailableMemory();
+            if (memory != DConstants::INVALID_INDEX) {
+                dbConfig.dbConfigOptions.maximum_memory = memory * 8 / 10;
+            }
+        }
+
+        if (new_config.dbConfigOptions.maximum_threads == (idx_t) -1) {
 #ifndef DUCKDB_NO_THREADS
-		config.options.maximum_threads = std::thread::hardware_concurrency();
+            dbConfig.dbConfigOptions.maximum_threads = std::thread::hardware_concurrency();
 #else
-		config.options.maximum_threads = 1;
+            config.options.maximum_threads = 1;
 #endif
-	}
-	config.allocator = move(new_config.allocator);
-	if (!config.allocator) {
-		config.allocator = make_unique<Allocator>();
-	}
-	config.replacement_scans = move(new_config.replacement_scans);
-	config.replacement_opens = move(new_config.replacement_opens);
-	config.parser_extensions = move(new_config.parser_extensions);
-	config.error_manager = move(new_config.error_manager);
-	if (!config.error_manager) {
-		config.error_manager = make_unique<ErrorManager>();
-	}
-	if (!config.default_allocator) {
-		config.default_allocator = Allocator::DefaultAllocatorReference();
-	}
-}
+        }
+        dbConfig.allocator = move(new_config.allocator);
+        if (!dbConfig.allocator) {
+            dbConfig.allocator = make_unique<Allocator>();
+        }
 
-DBConfig &DBConfig::GetConfig(ClientContext &context) {
-	return context.db->config;
-}
+        dbConfig.replacement_scans = move(new_config.replacement_scans);
+        dbConfig.replacement_opens = move(new_config.replacement_opens);
+        dbConfig.parser_extensions = move(new_config.parser_extensions);
 
-const DBConfig &DBConfig::GetConfig(const ClientContext &context) {
-	return context.db->config;
-}
+        dbConfig.error_manager = move(new_config.error_manager);
+        if (!dbConfig.error_manager) {
+            dbConfig.error_manager = make_unique<ErrorManager>();
+        }
 
-idx_t DatabaseInstance::NumberOfThreads() {
-	return scheduler->NumberOfThreads();
-}
+        if (!dbConfig.default_allocator) {
+            dbConfig.default_allocator = Allocator::DefaultAllocatorReference();
+        }
+    }
 
-const unordered_set<std::string> &DatabaseInstance::LoadedExtensions() {
-	return loaded_extensions;
-}
+    DBConfig &DBConfig::GetConfig(ClientContext &context) {
+        return context.databaseInstance->dbConfig;
+    }
 
-idx_t DuckDB::NumberOfThreads() {
-	return instance->NumberOfThreads();
-}
+    const DBConfig &DBConfig::GetConfig(const ClientContext &context) {
+        return context.databaseInstance->dbConfig;
+    }
 
-bool DuckDB::ExtensionIsLoaded(const std::string &name) {
-	return instance->loaded_extensions.find(name) != instance->loaded_extensions.end();
-}
-void DatabaseInstance::SetExtensionLoaded(const std::string &name) {
-	loaded_extensions.insert(name);
-}
+    idx_t DatabaseInstance::NumberOfThreads() {
+        return scheduler->NumberOfThreads();
+    }
 
-bool DatabaseInstance::TryGetCurrentSetting(const std::string &key, Value &result) {
-	// check the session values
-	auto &db_config = DBConfig::GetConfig(*this);
-	const auto &global_config_map = db_config.options.set_variables;
+    const unordered_set<std::string> &DatabaseInstance::LoadedExtensions() {
+        return loaded_extensions;
+    }
 
-	auto global_value = global_config_map.find(key);
-	bool found_global_value = global_value != global_config_map.end();
-	if (!found_global_value) {
-		return false;
-	}
-	result = global_value->second;
-	return true;
-}
+    idx_t DuckDB::NumberOfThreads() {
+        return databaseInstance->NumberOfThreads();
+    }
 
-string ClientConfig::ExtractTimezone() const {
-	auto entry = set_variables.find("TimeZone");
-	if (entry == set_variables.end()) {
-		return "UTC";
-	} else {
-		return entry->second.GetValue<std::string>();
-	}
-}
+    bool DuckDB::ExtensionIsLoaded(const std::string &name) {
+        return databaseInstance->loaded_extensions.find(name) != databaseInstance->loaded_extensions.end();
+    }
 
-ValidChecker &DatabaseInstance::GetValidChecker() {
-	return db_validity;
-}
+    void DatabaseInstance::SetExtensionLoaded(const std::string &name) {
+        loaded_extensions.insert(name);
+    }
 
-ValidChecker &ValidChecker::Get(DatabaseInstance &db) {
-	return db.GetValidChecker();
-}
+    bool DatabaseInstance::TryGetCurrentSetting(const std::string &key, Value &result) {
+        // check the session values
+        auto &db_config = DBConfig::GetConfig(*this);
+        const auto &global_config_map = db_config.dbConfigOptions.set_variables;
+
+        auto global_value = global_config_map.find(key);
+        bool found_global_value = global_value != global_config_map.end();
+        if (!found_global_value) {
+            return false;
+        }
+        result = global_value->second;
+        return true;
+    }
+
+    string ClientConfig::ExtractTimezone() const {
+        auto entry = set_variables.find("TimeZone");
+        if (entry == set_variables.end()) {
+            return "UTC";
+        } else {
+            return entry->second.GetValue<std::string>();
+        }
+    }
+
+    ValidChecker &DatabaseInstance::GetValidChecker() {
+        return db_validity;
+    }
+
+    ValidChecker &ValidChecker::Get(DatabaseInstance &db) {
+        return db.GetValidChecker();
+    }
 
 } // namespace duckdb

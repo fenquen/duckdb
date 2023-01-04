@@ -3,12 +3,12 @@
 using namespace duckdb;
 
 int main() {
-	DuckDB db(nullptr);
+	DuckDB duckDb("/Users/a/github/duckdb/data.db");
 
-	Connection con(db);
+	Connection connection(duckDb);
 
-	con.Query("CREATE TABLE integers(i INTEGER)");
-	con.Query("INSERT INTO integers VALUES (3)");
-	auto result = con.Query("SELECT * FROM integers");
+	connection.Query("CREATE TABLE integers(i INTEGER)");
+	connection.Query("INSERT INTO integers VALUES (3)");
+	auto result = connection.Query("SELECT * FROM integers");
 	result->Print();
 }

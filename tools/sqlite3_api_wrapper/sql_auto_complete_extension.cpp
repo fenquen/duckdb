@@ -404,7 +404,7 @@ void SQLAutoCompleteExtension::Load(DuckDB &db) {
 	Connection con(db);
 	con.BeginTransaction();
 
-	auto &context = *con.context;
+	auto &context = *con.clientContext;
 
 	Catalog &catalog = Catalog::GetCatalog(context);
 	TableFunction auto_complete_fun("sql_auto_complete", {LogicalType::VARCHAR}, SQLAutoCompleteFunction,

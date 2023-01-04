@@ -78,7 +78,7 @@ PreservedError ClientContext::VerifyQuery(ClientContextLock &lock, const string 
 			statement_verifiers.push_back(move(prepared_statement_verifier));
 		}
 	} else {
-		if (ValidChecker::IsInvalidated(*db)) {
+		if (ValidChecker::IsInvalidated(*databaseInstance)) {
 			return original->materialized_result->GetErrorObject();
 		}
 	}

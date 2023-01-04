@@ -94,7 +94,7 @@ static void test_helper(const V version_compatible_value, const uint64_t sourceV
 	deserializer.SetVersion(deserializer.Read<uint64_t>());
 	INFO("target version: " << deserializer.GetVersion());
 	FieldReader reader(deserializer);
-	auto read_op = target_deserialize(*con.context, LogicalOperatorType::LOGICAL_DUMMY_SCAN, reader);
+	auto read_op = target_deserialize(*con.clientContext, LogicalOperatorType::LOGICAL_DUMMY_SCAN, reader);
 	reader.Finalize();
 
 	REQUIRE(version_compatible_value == Approx(((T *)read_op.get())->value));

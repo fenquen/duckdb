@@ -273,12 +273,12 @@ duckdb_state duckdb_register_table_function(duckdb_connection connection, duckdb
 	if (tf->name.empty() || !info->bind || !info->init || !info->function) {
 		return DuckDBError;
 	}
-	con->context->RunFunctionInTransaction([&]() {
-		auto &catalog = duckdb::Catalog::GetCatalog(*con->context);
+	con->clientContext->RunFunctionInTransaction([&]() {
+		auto &catalog = duckdb::Catalog::GetCatalog(*con->clientContext);
 		duckdb::CreateTableFunctionInfo tf_info(*tf);
 
 		// create the function in the catalog
-		catalog.CreateTableFunction(*con->context, &tf_info);
+		catalog.CreateTableFunction(*con->clientContext, &tf_info);
 	});
 	return DuckDBSuccess;
 }

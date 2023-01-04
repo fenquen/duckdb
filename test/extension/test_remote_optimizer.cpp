@@ -58,7 +58,7 @@ TEST_CASE("Test using a remote optimizer pass in case thats important to someone
 			REQUIRE(read(connfd, buffer, bytes) == bytes);
 
 			BufferedDeserializer deserializer((data_ptr_t)buffer, bytes);
-			PlanDeserializationState state(*con2.context);
+			PlanDeserializationState state(*con2.clientContext);
 			auto plan = LogicalOperator::Deserialize(deserializer, state);
 			plan->ResolveOperatorTypes();
 
@@ -81,7 +81,7 @@ TEST_CASE("Test using a remote optimizer pass in case thats important to someone
 	} else if (pid > 0) { // parent process
 
 		DBConfig config;
-		config.options.allow_unsigned_extensions = true;
+		config.dbConfigOptions.allow_unsigned_extensions = true;
 		DuckDB db1(nullptr, &config);
 		Connection con1(db1);
 		auto load_parquet = con1.Query("LOAD 'parquet'");

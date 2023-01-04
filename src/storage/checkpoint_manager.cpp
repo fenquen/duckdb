@@ -90,7 +90,7 @@ void SingleFileCheckpointWriter::CreateCheckpoint() {
 	wal->WriteCheckpoint(meta_block);
 	wal->Flush();
 
-	if (config.options.checkpoint_abort == CheckpointAbort::DEBUG_ABORT_BEFORE_HEADER) {
+	if (config.dbConfigOptions.checkpoint_abort == CheckpointAbort::DEBUG_ABORT_BEFORE_HEADER) {
 		throw FatalException("Checkpoint aborted before header write because of PRAGMA checkpoint_abort flag");
 	}
 
@@ -99,7 +99,7 @@ void SingleFileCheckpointWriter::CreateCheckpoint() {
 	header.meta_block = meta_block;
 	block_manager.WriteHeader(header);
 
-	if (config.options.checkpoint_abort == CheckpointAbort::DEBUG_ABORT_BEFORE_TRUNCATE) {
+	if (config.dbConfigOptions.checkpoint_abort == CheckpointAbort::DEBUG_ABORT_BEFORE_TRUNCATE) {
 		throw FatalException("Checkpoint aborted before truncate because of PRAGMA checkpoint_abort flag");
 	}
 
@@ -119,11 +119,11 @@ void SingleFileCheckpointReader::LoadFromStorage() {
 		return;
 	}
 
-	Connection con(storage.db);
+	Connection con(storage.databaseInstance);
 	con.BeginTransaction();
 	// create the MetaBlockReader to read from the storage
 	MetaBlockReader reader(block_manager, meta_block);
-	LoadCheckpoint(*con.context, reader);
+	LoadCheckpoint(*con.clientContext, reader);
 	con.Commit();
 }
 
@@ -384,7 +384,7 @@ void CheckpointReader::ReadIndex(ClientContext &context, MetaBlockReader &reader
 	case IndexType::ART: {
 		auto art =
 		    make_unique<ART>(info->column_ids, TableIOManager::Get(*table_catalog->storage), move(unbound_expressions),
-		                     info->constraint_type, *context.db, root_block_id, root_offset);
+                             info->constraint_type, *context.databaseInstance, root_block_id, root_offset);
 		index_catalog->index = art.get();
 		table_catalog->storage->info->indexes.AddIndex(move(art));
 		break;

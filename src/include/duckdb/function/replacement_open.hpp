@@ -12,34 +12,38 @@
 
 namespace duckdb {
 
-class DatabaseInstance;
-struct DBConfig;
+    class DatabaseInstance;
 
-struct ReplacementOpenData {
-	virtual ~ReplacementOpenData() {
-	}
-};
+    struct DBConfig;
 
-struct ReplacementOpenStaticData {
-	virtual ~ReplacementOpenStaticData() {
-	}
-};
+    struct ReplacementOpenData {
+        virtual ~ReplacementOpenData() {
+        }
+    };
 
-typedef unique_ptr<ReplacementOpenData> (*replacement_open_pre_t)(DBConfig &config,
-                                                                  ReplacementOpenStaticData *static_data);
-typedef void (*replacement_open_post_t)(DatabaseInstance &instance, ReplacementOpenData *open_data);
+    struct ReplacementOpenStaticData {
+        virtual ~ReplacementOpenStaticData() {
+        }
+    };
 
-struct ReplacementOpen {
-	explicit ReplacementOpen(replacement_open_pre_t pre_func, replacement_open_post_t post_func)
-	    : pre_func(pre_func), post_func(post_func), data(nullptr) {
-	}
+    typedef unique_ptr<ReplacementOpenData> (*replacement_open_pre_t)(DBConfig &config,
+                                                                      ReplacementOpenStaticData *static_data);
 
-	replacement_open_pre_t pre_func;
-	replacement_open_post_t post_func;
+    typedef void (*replacement_open_post_t)(DatabaseInstance &instance, ReplacementOpenData *open_data);
 
-	unique_ptr<ReplacementOpenData> data;
+    struct ReplacementOpen {
+        explicit ReplacementOpen(replacement_open_pre_t pre_func,
+                                 replacement_open_post_t post_func) : pre_func(pre_func),
+                                                                      post_func(post_func),
+                                                                      data(nullptr) {
+        }
 
-	shared_ptr<ReplacementOpenStaticData> static_data;
-};
+        replacement_open_pre_t pre_func;
+        replacement_open_post_t post_func;
+
+        unique_ptr<ReplacementOpenData> data;
+
+        shared_ptr<ReplacementOpenStaticData> static_data;
+    };
 
 } // namespace duckdb

@@ -46,7 +46,7 @@ Catalog::~Catalog() {
 }
 
 Catalog &Catalog::GetCatalog(ClientContext &context) {
-	return context.db->GetCatalog();
+	return context.databaseInstance->GetCatalog();
 }
 
 CatalogEntry *Catalog::CreateTable(ClientContext &context, BoundCreateTableInfo *info) {

@@ -514,7 +514,7 @@ TEST_CASE("Test opening an invalid database file", "[api]") {
 
 TEST_CASE("Test large number of connections to a single database", "[api]") {
 	auto db = make_unique<DuckDB>(nullptr);
-	auto context = make_unique<ClientContext>((*db).instance);
+	auto context = make_unique<ClientContext>((*db).databaseInstance);
 	auto &connection_manager = ConnectionManager::Get(*context);
 
 	vector<unique_ptr<Connection>> connections;

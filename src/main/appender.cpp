@@ -49,7 +49,7 @@ InternalAppender::~InternalAppender() {
 }
 
 Appender::Appender(Connection &con, const string &schema_name, const string &table_name)
-    : BaseAppender(Allocator::DefaultAllocator(), AppenderType::LOGICAL), context(con.context) {
+    : BaseAppender(Allocator::DefaultAllocator(), AppenderType::LOGICAL), context(con.clientContext) {
 	description = con.TableInfo(schema_name, table_name);
 	if (!description) {
 		// table could not be found

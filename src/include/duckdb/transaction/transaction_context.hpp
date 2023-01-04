@@ -13,47 +13,60 @@
 
 namespace duckdb {
 
-class ClientContext;
-class Transaction;
-class TransactionManager;
+    class ClientContext;
+
+    class Transaction;
+
+    class TransactionManager;
 
 //! The transaction context keeps track of all the information relating to the
 //! current transaction
-class TransactionContext {
-public:
-	TransactionContext(TransactionManager &transaction_manager, ClientContext &context)
-	    : transaction_manager(transaction_manager), context(context), auto_commit(true), current_transaction(nullptr) {
-	}
-	~TransactionContext();
+    class TransactionContext {
+    public:
+        TransactionContext(TransactionManager &transactionManager,
+                           ClientContext &clientContext) : transactionManager(transactionManager),
+                                                           clientContext(clientContext),
+                                                           auto_commit(true),
+                                                           current_transaction(nullptr) {
+        }
 
-	Transaction &ActiveTransaction() {
-		D_ASSERT(current_transaction);
-		return *current_transaction;
-	}
+        ~TransactionContext();
 
-	bool HasActiveTransaction() {
-		return !!current_transaction;
-	}
+        Transaction &ActiveTransaction() {
+            D_ASSERT(current_transaction);
+            return *current_transaction;
+        }
 
-	void RecordQuery(string query);
-	void BeginTransaction();
-	void Commit();
-	void Rollback();
-	void ClearTransaction();
+        bool HasActiveTransaction() {
+            return current_transaction != nullptr;
+        }
 
-	void SetAutoCommit(bool value);
-	bool IsAutoCommit() {
-		return auto_commit;
-	}
+        void RecordQuery(string query);
 
-private:
-	TransactionManager &transaction_manager;
-	ClientContext &context;
-	bool auto_commit;
+        void BeginTransaction();
 
-	Transaction *current_transaction;
+        void Commit();
 
-	TransactionContext(const TransactionContext &) = delete;
-};
+        void Rollback();
+
+        void ClearTransaction();
+
+        void SetAutoCommit(bool value);
+
+        bool IsAutoCommit() {
+            return auto_commit;
+        }
+
+    private:
+        TransactionManager &transactionManager;
+
+        ClientContext &clientContext;
+
+        bool auto_commit;
+
+        Transaction *current_transaction;
+
+        TransactionContext(const TransactionContext &) = delete;
+    };
 
 } // namespace duckdb

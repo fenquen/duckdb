@@ -38,10 +38,10 @@ typedef void (*warning_callback)(std::string);
 class Connection {
 public:
 	DUCKDB_API explicit Connection(DuckDB &database);
-	DUCKDB_API explicit Connection(DatabaseInstance &database);
+	DUCKDB_API explicit Connection(DatabaseInstance &databaseInstance);
 	DUCKDB_API ~Connection();
 
-	shared_ptr<ClientContext> context;
+	shared_ptr<ClientContext> clientContext;
 	warning_callback warning_cb;
 
 public:
@@ -69,9 +69,9 @@ public:
 	//! one active StreamQueryResult per Connection object. Calling SendQuery() will invalidate any previously existing
 	//! StreamQueryResult.
 	DUCKDB_API unique_ptr<QueryResult> SendQuery(const string &query);
-	//! Issues a query to the database and materializes the result (if necessary). Always returns a
+	//! Issues a querySql to the database and materializes the result (if necessary). Always returns a
 	//! MaterializedQueryResult.
-	DUCKDB_API unique_ptr<MaterializedQueryResult> Query(const string &query);
+	DUCKDB_API unique_ptr<MaterializedQueryResult> Query(const string &querySql);
 	//! Issues a query to the database and materializes the result (if necessary). Always returns a
 	//! MaterializedQueryResult.
 	DUCKDB_API unique_ptr<MaterializedQueryResult> Query(unique_ptr<SQLStatement> statement);
@@ -149,7 +149,7 @@ public:
 	template <typename TR, typename... Args>
 	void CreateScalarFunction(const string &name, TR (*udf_func)(Args...)) {
 		scalar_function_t function = UDFWrapper::CreateScalarFunction<TR, Args...>(name, udf_func);
-		UDFWrapper::RegisterFunction<TR, Args...>(name, function, *context);
+		UDFWrapper::RegisterFunction<TR, Args...>(name, function, *clientContext);
 	}
 
 	template <typename TR, typename... Args>
@@ -157,38 +157,38 @@ public:
 	                          TR (*udf_func)(Args...)) {
 		scalar_function_t function =
 		    UDFWrapper::CreateScalarFunction<TR, Args...>(name, args, move(ret_type), udf_func);
-		UDFWrapper::RegisterFunction(name, args, ret_type, function, *context);
+		UDFWrapper::RegisterFunction(name, args, ret_type, function, *clientContext);
 	}
 
 	template <typename TR, typename... Args>
 	void CreateVectorizedFunction(const string &name, scalar_function_t udf_func,
 	                              LogicalType varargs = LogicalType::INVALID) {
-		UDFWrapper::RegisterFunction<TR, Args...>(name, udf_func, *context, move(varargs));
+		UDFWrapper::RegisterFunction<TR, Args...>(name, udf_func, *clientContext, move(varargs));
 	}
 
 	DUCKDB_API void CreateVectorizedFunction(const string &name, vector<LogicalType> args, LogicalType ret_type,
 	                                         scalar_function_t udf_func, LogicalType varargs = LogicalType::INVALID) {
-		UDFWrapper::RegisterFunction(name, move(args), move(ret_type), udf_func, *context, move(varargs));
+		UDFWrapper::RegisterFunction(name, move(args), move(ret_type), udf_func, *clientContext, move(varargs));
 	}
 
 	//------------------------------------- Aggreate Functions ----------------------------------------//
 	template <typename UDF_OP, typename STATE, typename TR, typename TA>
 	void CreateAggregateFunction(const string &name) {
 		AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name);
-		UDFWrapper::RegisterAggrFunction(function, *context);
+		UDFWrapper::RegisterAggrFunction(function, *clientContext);
 	}
 
 	template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
 	void CreateAggregateFunction(const string &name) {
 		AggregateFunction function = UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name);
-		UDFWrapper::RegisterAggrFunction(function, *context);
+		UDFWrapper::RegisterAggrFunction(function, *clientContext);
 	}
 
 	template <typename UDF_OP, typename STATE, typename TR, typename TA>
 	void CreateAggregateFunction(const string &name, LogicalType ret_type, LogicalType input_typeA) {
 		AggregateFunction function =
 		    UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA>(name, ret_type, input_typeA);
-		UDFWrapper::RegisterAggrFunction(function, *context);
+		UDFWrapper::RegisterAggrFunction(function, *clientContext);
 	}
 
 	template <typename UDF_OP, typename STATE, typename TR, typename TA, typename TB>
@@ -196,7 +196,7 @@ public:
 	                             LogicalType input_typeB) {
 		AggregateFunction function =
 		    UDFWrapper::CreateAggregateFunction<UDF_OP, STATE, TR, TA, TB>(name, ret_type, input_typeA, input_typeB);
-		UDFWrapper::RegisterAggrFunction(function, *context);
+		UDFWrapper::RegisterAggrFunction(function, *clientContext);
 	}
 
 	DUCKDB_API void CreateAggregateFunction(const string &name, vector<LogicalType> arguments, LogicalType return_type,
@@ -209,7 +209,7 @@ public:
 		AggregateFunction function =
 		    UDFWrapper::CreateAggregateFunction(name, arguments, return_type, state_size, initialize, update, combine,
 		                                        finalize, simple_update, bind, destructor);
-		UDFWrapper::RegisterAggrFunction(function, *context);
+		UDFWrapper::RegisterAggrFunction(function, *clientContext);
 	}
 
 private:

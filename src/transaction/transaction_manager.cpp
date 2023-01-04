@@ -148,7 +148,7 @@ void TransactionManager::Checkpoint(ClientContext &context, bool force) {
 				// potentially resulting in garbage collection
 				RemoveTransaction(transaction.get());
 				if (transaction_context) {
-					transaction_context->transaction.ClearTransaction();
+					transaction_context->transactionContext.ClearTransaction();
 				}
 				i--;
 			}

@@ -36,7 +36,7 @@ void ReadCSVData::InitializeFiles(ClientContext &context, const vector<string> &
 void ReadCSVData::FinalizeRead(ClientContext &context) {
 	BaseCSVData::Finalize();
 	auto &config = DBConfig::GetConfig(context);
-	single_threaded = !config.options.experimental_parallel_csv_reader;
+	single_threaded = !config.dbConfigOptions.experimental_parallel_csv_reader;
 	if (options.delimiter.size() > 1 || options.escape.size() > 1 || options.quote.size() > 1) {
 		// not supported for parallel CSV reading
 		single_threaded = true;
@@ -46,7 +46,7 @@ void ReadCSVData::FinalizeRead(ClientContext &context) {
 static unique_ptr<FunctionData> ReadCSVBind(ClientContext &context, TableFunctionBindInput &input,
                                             vector<LogicalType> &return_types, vector<string> &names) {
 	auto &config = DBConfig::GetConfig(context);
-	if (!config.options.enable_external_access) {
+	if (!config.dbConfigOptions.enable_external_access) {
 		throw PermissionException("Scanning CSV files is disabled through configuration");
 	}
 	auto result = make_unique<ReadCSVData>();
@@ -332,8 +332,8 @@ static unique_ptr<GlobalTableFunctionState> ParallelCSVInitGlobal(ClientContext 
 
 	idx_t rows_to_skip = bind_data.options.skip_rows + (bind_data.options.has_header ? 1 : 0);
 	return make_unique<ParallelCSVGlobalState>(context, move(file_handle), bind_data.files,
-	                                           context.db->NumberOfThreads(), bind_data.options.buffer_size,
-	                                           rows_to_skip);
+                                               context.databaseInstance->NumberOfThreads(), bind_data.options.buffer_size,
+                                               rows_to_skip);
 }
 
 //===--------------------------------------------------------------------===//

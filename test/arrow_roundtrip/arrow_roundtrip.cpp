@@ -124,7 +124,7 @@ void RunArrowComparison(Connection &con, const string &query, bool big_result = 
 		FAIL();
 	}
 	// create the roundtrip factory
-	auto tz = ClientConfig::GetConfig(*con.context).ExtractTimezone();
+	auto tz = ClientConfig::GetConfig(*con.clientContext).ExtractTimezone();
 	auto types = initial_result->types;
 	auto names = initial_result->names;
 	ArrowRoundtripFactory factory(move(types), move(names), tz, move(initial_result), big_result);

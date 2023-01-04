@@ -93,8 +93,8 @@ unique_ptr<AnalyzeState> ColumnDataCheckpointer::DetectBestCompressionMethod(idx
 		forced_method = ForceCompression(compression_functions, compression_type);
 	}
 	if (compression_type == CompressionType::COMPRESSION_AUTO &&
-	    config.options.force_compression != CompressionType::COMPRESSION_AUTO) {
-		forced_method = ForceCompression(compression_functions, config.options.force_compression);
+        config.dbConfigOptions.force_compression != CompressionType::COMPRESSION_AUTO) {
+		forced_method = ForceCompression(compression_functions, config.dbConfigOptions.force_compression);
 	}
 	// set up the analyze states for each compression method
 	vector<unique_ptr<AnalyzeState>> analyze_states;

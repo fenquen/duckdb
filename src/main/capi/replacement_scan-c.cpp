@@ -63,7 +63,7 @@ void duckdb_add_replacement_scan(duckdb_database db, duckdb_replacement_callback
 	scan_info->extra_data = extra_data;
 	scan_info->delete_callback = delete_callback;
 
-	auto &config = duckdb::DBConfig::GetConfig(*wrapper->database->instance);
+	auto &config = duckdb::DBConfig::GetConfig(*wrapper->database->databaseInstance);
 	config.replacement_scans.push_back(
 	    duckdb::ReplacementScan(duckdb::duckdb_capi_replacement_callback, move(scan_info)));
 }

@@ -67,13 +67,13 @@ struct ThrottlingSum {
 	static void Register(Connection &con) {
 		// Create our test TableFunction
 		con.BeginTransaction();
-		auto &client_context = *con.context;
+		auto &client_context = *con.clientContext;
 		auto &catalog = Catalog::GetCatalog(client_context);
 		TableFunction caching_table_in_out("throttling_sum", {LogicalType::TABLE}, nullptr, ThrottlingSum::Bind);
 		caching_table_in_out.in_out_function = ThrottlingSum::Function;
 		caching_table_in_out.in_out_function_final = ThrottlingSum::Finalize;
 		CreateTableFunctionInfo caching_table_in_out_info(caching_table_in_out);
-		catalog.CreateTableFunction(*con.context, &caching_table_in_out_info);
+		catalog.CreateTableFunction(*con.clientContext, &caching_table_in_out_info);
 		con.Commit();
 	}
 };

@@ -14,7 +14,7 @@ namespace duckdb {
 
 SQLLogicTestRunner::SQLLogicTestRunner(string dbpath) : dbpath(move(dbpath)), finished_processing_file(false) {
 	config = GetTestConfig();
-	config->options.load_extensions = false;
+	config->dbConfigOptions.load_extensions = false;
 }
 
 SQLLogicTestRunner::~SQLLogicTestRunner() {
@@ -548,11 +548,11 @@ void SQLLogicTestRunner::ExecuteFile(string script) {
 			}
 			// set up the config file
 			if (readonly) {
-				config->options.use_temporary_directory = false;
-				config->options.access_mode = AccessMode::READ_ONLY;
+				config->dbConfigOptions.use_temporary_directory = false;
+				config->dbConfigOptions.access_mode = AccessMode::READ_ONLY;
 			} else {
-				config->options.use_temporary_directory = true;
-				config->options.access_mode = AccessMode::AUTOMATIC;
+				config->dbConfigOptions.use_temporary_directory = true;
+				config->dbConfigOptions.access_mode = AccessMode::AUTOMATIC;
 			}
 			// now create the database file
 			LoadDatabase(dbpath);

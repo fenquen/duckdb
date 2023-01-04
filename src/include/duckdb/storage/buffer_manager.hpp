@@ -34,10 +34,13 @@ class BufferManager {
 	friend class BlockManager;
 
 public:
-	BufferManager(DatabaseInstance &db, string temp_directory, idx_t maximum_memory);
+	BufferManager(DatabaseInstance &databaseInstance,
+                  string tempDirectory,
+                  idx_t maximum_memory);
+
 	virtual ~BufferManager();
 
-	//! Registers an in-memory buffer that cannot be unloaded until it is destroyed
+    //! Registers an in-memory buffer that cannot be unloaded until it is destroyed
 	//! This buffer can be small (smaller than BLOCK_SIZE)
 	//! Unpin and pin are nops on this block of memory
 	shared_ptr<BlockHandle> RegisterSmallMemory(idx_t block_size);

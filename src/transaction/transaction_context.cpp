@@ -19,7 +19,7 @@ void TransactionContext::BeginTransaction() {
 	if (current_transaction) {
 		throw TransactionException("cannot start a transaction within a transaction");
 	}
-	current_transaction = transaction_manager.StartTransaction(context);
+	current_transaction = transactionManager.StartTransaction(clientContext);
 }
 
 void TransactionContext::Commit() {
@@ -29,7 +29,7 @@ void TransactionContext::Commit() {
 	auto transaction = current_transaction;
 	SetAutoCommit(true);
 	current_transaction = nullptr;
-	string error = transaction_manager.CommitTransaction(context, transaction);
+	string error = transactionManager.CommitTransaction(clientContext, transaction);
 	if (!error.empty()) {
 		throw TransactionException("Failed to commit: %s", error);
 	}
@@ -48,7 +48,7 @@ void TransactionContext::Rollback() {
 	}
 	auto transaction = current_transaction;
 	ClearTransaction();
-	transaction_manager.RollbackTransaction(transaction);
+	transactionManager.RollbackTransaction(transaction);
 }
 
 void TransactionContext::ClearTransaction() {

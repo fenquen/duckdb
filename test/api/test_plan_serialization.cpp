@@ -29,24 +29,24 @@ static void test_helper(string sql, vector<string> fixtures = vector<string>()) 
 
 	int i = 0;
 	for (auto &statement : p.statements) {
-		con.context->transaction.BeginTransaction();
+		con.clientContext->transactionContext.BeginTransaction();
 		// Should that be the default "ToString"?
 		string statement_sql(statement->query.c_str() + statement->stmt_location, statement->stmt_length);
 		//		printf("[%d] Processing statement '%s'\n", i, statement_sql.c_str());
-		Planner planner(*con.context);
+		Planner planner(*con.clientContext);
 		planner.CreatePlan(move(statement));
 		//		printf("[%d] Created plan\n", i);
 		auto plan = move(planner.plan);
 
-		Optimizer optimizer(*planner.binder, *con.context);
+		Optimizer optimizer(*planner.binder, *con.clientContext);
 
 		plan = optimizer.Optimize(move(plan));
 
 		// LogicalOperator's copy utilizes its serialize and deserialize methods
-		auto new_plan = plan->Copy(*con.context);
+		auto new_plan = plan->Copy(*con.clientContext);
 
 		auto optimized_plan = optimizer.Optimize(move(new_plan));
-		con.context->transaction.Commit();
+		con.clientContext->transactionContext.Commit();
 		++i;
 	}
 }

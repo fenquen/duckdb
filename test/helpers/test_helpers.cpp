@@ -95,8 +95,8 @@ bool TestIsInternalError(unordered_set<string> &internal_error_messages, const s
 
 unique_ptr<DBConfig> GetTestConfig() {
 	auto result = make_unique<DBConfig>();
-	result->options.checkpoint_wal_size = 0;
-	result->options.allow_unsigned_extensions = true;
+	result->dbConfigOptions.checkpoint_wal_size = 0;
+	result->dbConfigOptions.allow_unsigned_extensions = true;
 	return result;
 }
 
@@ -267,9 +267,9 @@ bool compare_result(string csv, ColumnDataCollection &collection, vector<Logical
 
 	DuckDB db;
 	Connection con(db);
-	BufferedCSVReader reader(*con.context, move(options), sql_types);
+	BufferedCSVReader reader(*con.clientContext, move(options), sql_types);
 
-	ColumnDataCollection csv_data_collection(*con.context, sql_types);
+	ColumnDataCollection csv_data_collection(*con.clientContext, sql_types);
 	while (true) {
 		// parse a chunk from the CSV file
 		try {

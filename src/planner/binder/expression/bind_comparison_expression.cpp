@@ -23,7 +23,7 @@ unique_ptr<Expression> ExpressionBinder::PushCollation(ClientContext &context, u
 	// replace default collation with system collation
 	string collation;
 	if (collation_p.empty()) {
-		collation = DBConfig::GetConfig(context).options.collation;
+		collation = DBConfig::GetConfig(context).dbConfigOptions.collation;
 	} else {
 		collation = collation_p;
 	}

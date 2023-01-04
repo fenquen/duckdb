@@ -104,7 +104,7 @@ public:
 	    : op(op_p), context(context), buffer_manager(BufferManager::GetBufferManager(context)),
 	      allocator(Allocator::Get(context)),
 	      partition_info((idx_t)TaskScheduler::GetScheduler(context).NumberOfThreads()), next_sort(0),
-	      memory_per_thread(0), count(0), mode(DBConfig::GetConfig(context).options.window_mode) {
+	      memory_per_thread(0), count(0), mode(DBConfig::GetConfig(context).dbConfigOptions.window_mode) {
 
 		D_ASSERT(op.select_list[0]->GetExpressionClass() == ExpressionClass::BOUND_WINDOW);
 		auto wexpr = reinterpret_cast<BoundWindowExpression *>(op.select_list[0].get());

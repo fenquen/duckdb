@@ -27,7 +27,7 @@ TEST_CASE("Rollback create table", "[memoryleak]") {
 		return;
 	}
 	DBConfig config;
-	config.options.load_extensions = false;
+	config.dbConfigOptions.load_extensions = false;
 	DuckDB db(":memory:", &config);
 	Connection con(db);
 	while (true) {

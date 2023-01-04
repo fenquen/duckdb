@@ -18,7 +18,7 @@ void duckdb_execute_tasks(duckdb_database database, idx_t max_tasks) {
 		return;
 	}
 	auto wrapper = (DatabaseData *)database;
-	auto &scheduler = duckdb::TaskScheduler::GetScheduler(*wrapper->database->instance);
+	auto &scheduler = duckdb::TaskScheduler::GetScheduler(*wrapper->database->databaseInstance);
 	scheduler.ExecuteTasks(max_tasks);
 }
 
@@ -27,7 +27,7 @@ duckdb_task_state duckdb_create_task_state(duckdb_database database) {
 		return nullptr;
 	}
 	auto wrapper = (DatabaseData *)database;
-	auto state = new CAPITaskState(*wrapper->database->instance);
+	auto state = new CAPITaskState(*wrapper->database->databaseInstance);
 	return state;
 }
 

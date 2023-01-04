@@ -320,7 +320,7 @@ vector<string> TestResultHelper::LoadResultFromFile(string fname, vector<string>
 		}
 		for (idx_t r = 0; r < chunk->size(); r++) {
 			for (idx_t c = 0; c < chunk->ColumnCount(); c++) {
-				values.push_back(chunk->GetValue(c, r).CastAs(*runner.con->context, LogicalType::VARCHAR).ToString());
+				values.push_back(chunk->GetValue(c, r).CastAs(*runner.con->clientContext, LogicalType::VARCHAR).ToString());
 			}
 		}
 	}
@@ -346,7 +346,7 @@ string TestResultHelper::SQLLogicTestConvertValue(Value value, LogicalType sql_t
 			case LogicalTypeId::DECIMAL:
 			case LogicalTypeId::FLOAT:
 			case LogicalTypeId::DOUBLE:
-				return value.CastAs(*runner.con->context, LogicalType::BIGINT).ToString();
+				return value.CastAs(*runner.con->clientContext, LogicalType::BIGINT).ToString();
 			default:
 				break;
 			}
@@ -355,7 +355,7 @@ string TestResultHelper::SQLLogicTestConvertValue(Value value, LogicalType sql_t
 		case LogicalTypeId::BOOLEAN:
 			return BooleanValue::Get(value) ? "1" : "0";
 		default: {
-			string str = value.CastAs(*runner.con->context, LogicalType::VARCHAR).ToString();
+			string str = value.CastAs(*runner.con->clientContext, LogicalType::VARCHAR).ToString();
 			if (str.empty()) {
 				return "(empty)";
 			} else {
@@ -451,7 +451,7 @@ bool TestResultHelper::CompareValues(SQLLogicTestLogger &logger, MaterializedQue
 			converted_lvalue = true;
 		} else {
 			lvalue = Value(lvalue_str);
-			if (lvalue.TryCastAs(*runner.con->context, sql_type)) {
+			if (lvalue.TryCastAs(*runner.con->clientContext, sql_type)) {
 				converted_lvalue = true;
 			}
 		}
@@ -460,12 +460,12 @@ bool TestResultHelper::CompareValues(SQLLogicTestLogger &logger, MaterializedQue
 			converted_rvalue = true;
 		} else {
 			rvalue = Value(rvalue_str);
-			if (rvalue.TryCastAs(*runner.con->context, sql_type)) {
+			if (rvalue.TryCastAs(*runner.con->clientContext, sql_type)) {
 				converted_rvalue = true;
 			}
 		}
 		if (converted_lvalue && converted_rvalue) {
-			error = !Value::ValuesAreEqual(*runner.con->context, lvalue, rvalue);
+			error = !Value::ValuesAreEqual(*runner.con->clientContext, lvalue, rvalue);
 		} else {
 			error = true;
 		}
@@ -485,7 +485,7 @@ bool TestResultHelper::CompareValues(SQLLogicTestLogger &logger, MaterializedQue
 		} else if (low_r_val == false_str || rvalue_str == "0") {
 			rvalue = Value(0);
 		}
-		error = !Value::ValuesAreEqual(*runner.con->context, lvalue, rvalue);
+		error = !Value::ValuesAreEqual(*runner.con->clientContext, lvalue, rvalue);
 
 	} else {
 		// for other types we just mark the result as incorrect

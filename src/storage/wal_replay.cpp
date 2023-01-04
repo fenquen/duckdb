@@ -31,7 +31,7 @@ bool WriteAheadLog::Replay(DatabaseInstance &database, string &path) {
 
 	// first deserialize the WAL to look for a checkpoint flag
 	// if there is a checkpoint flag, we might have already flushed the contents of the WAL to disk
-	ReplayState checkpoint_state(database, *con.context, *initial_reader);
+	ReplayState checkpoint_state(database, *con.clientContext, *initial_reader);
 	checkpoint_state.deserialize_only = true;
 	try {
 		while (true) {
@@ -68,7 +68,7 @@ bool WriteAheadLog::Replay(DatabaseInstance &database, string &path) {
 
 	// we need to recover from the WAL: actually set up the replay state
 	BufferedFileReader reader(database.GetFileSystem(), path.c_str());
-	ReplayState state(database, *con.context, reader);
+	ReplayState state(database, *con.clientContext, reader);
 
 	// replay the WAL
 	// note that everything is wrapped inside a try/catch block here

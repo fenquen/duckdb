@@ -128,7 +128,7 @@ void DBConfig::SetOption(DatabaseInstance *db, const ConfigurationOption &option
 
 void DBConfig::SetOption(const string &name, Value value) {
 	lock_guard<mutex> l(config_lock);
-	options.set_variables[name] = move(value);
+    dbConfigOptions.set_variables[name] = move(value);
 }
 
 void DBConfig::AddExtensionOption(string name, string description, LogicalType parameter,
@@ -198,11 +198,11 @@ bool DBConfigOptions::operator==(const DBConfigOptions &other) const {
 }
 
 bool DBConfig::operator==(const DBConfig &other) {
-	return other.options == options;
+	return other.dbConfigOptions == dbConfigOptions;
 }
 
 bool DBConfig::operator!=(const DBConfig &other) {
-	return !(other.options == options);
+	return !(other.dbConfigOptions == dbConfigOptions);
 }
 
 } // namespace duckdb

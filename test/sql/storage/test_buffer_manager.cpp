@@ -15,9 +15,9 @@ TEST_CASE("Test scanning a table and computing an aggregate over a table that ex
 	auto config = GetTestConfig();
 
 	// set the maximum memory to 10MB and force uncompressed so we actually use the memory
-	config->options.force_compression = CompressionType::COMPRESSION_UNCOMPRESSED;
-	config->options.maximum_memory = 10000000;
-	config->options.maximum_threads = 1;
+	config->dbConfigOptions.force_compression = CompressionType::COMPRESSION_UNCOMPRESSED;
+	config->dbConfigOptions.maximum_memory = 10000000;
+	config->dbConfigOptions.maximum_threads = 1;
 
 	int64_t expected_sum;
 	Value sum;
@@ -30,7 +30,7 @@ TEST_CASE("Test scanning a table and computing an aggregate over a table that ex
 		REQUIRE_NO_FAIL(con.Query("CREATE TABLE test (a INTEGER, b INTEGER);"));
 		REQUIRE_NO_FAIL(con.Query("INSERT INTO test VALUES (11, 22), (13, 22), (12, 21), (NULL, NULL)"));
 		uint64_t table_size = 2 * 4 * sizeof(int);
-		uint64_t desired_size = 10 * config->options.maximum_memory;
+		uint64_t desired_size = 10 * config->dbConfigOptions.maximum_memory;
 		expected_sum = 11 + 12 + 13 + 22 + 22 + 21;
 		// grow the table until it exceeds 100MB
 		while (table_size < desired_size) {
@@ -56,7 +56,7 @@ TEST_CASE("Test storing a big string that exceeds buffer manager size", "[storag
 	unique_ptr<MaterializedQueryResult> result;
 	auto storage_database = TestCreatePath("storage_test");
 	auto config = GetTestConfig();
-	config->options.maximum_threads = 1;
+	config->dbConfigOptions.maximum_threads = 1;
 
 	uint64_t string_length = 64;
 	uint64_t desired_size = 10000000; // desired size is 10MB
@@ -94,7 +94,7 @@ TEST_CASE("Test storing a big string that exceeds buffer manager size", "[storag
 	}
 	// now reload the database, but this time with a max memory of 5MB
 	{
-		config->options.maximum_memory = 5000000;
+		config->dbConfigOptions.maximum_memory = 5000000;
 		DuckDB db(storage_database, config.get());
 		Connection con(db);
 		// we can still select the integer
@@ -105,7 +105,7 @@ TEST_CASE("Test storing a big string that exceeds buffer manager size", "[storag
 	}
 	{
 		// reloading with a bigger limit again makes it work
-		config->options.maximum_memory = (idx_t)-1;
+		config->dbConfigOptions.maximum_memory = (idx_t)-1;
 		DuckDB db(storage_database, config.get());
 		Connection con(db);
 		result = con.Query("SELECT LENGTH(a) FROM test");
@@ -122,9 +122,9 @@ TEST_CASE("Test appending and checkpointing a table that exceeds buffer manager 
 	auto config = GetTestConfig();
 
 	// maximum memory is 10MB
-	config->options.force_compression = CompressionType::COMPRESSION_UNCOMPRESSED;
-	config->options.maximum_memory = 10000000;
-	config->options.maximum_threads = 1;
+	config->dbConfigOptions.force_compression = CompressionType::COMPRESSION_UNCOMPRESSED;
+	config->dbConfigOptions.maximum_memory = 10000000;
+	config->dbConfigOptions.maximum_threads = 1;
 
 	// create a table of size 10 times the buffer pool size
 	uint64_t size = 0, size_a, sum_a, sum_b;
@@ -244,7 +244,7 @@ TEST_CASE("Test buffer reallocation", "[storage][.]") {
 	const idx_t limit = 1000000000;
 	REQUIRE_NO_FAIL(con.Query(StringUtil::Format("PRAGMA memory_limit='%lldB'", limit)));
 
-	auto &buffer_manager = BufferManager::GetBufferManager(*con.context);
+	auto &buffer_manager = BufferManager::GetBufferManager(*con.clientContext);
 	CHECK(buffer_manager.GetUsedMemory() == 0);
 
 	idx_t requested_size = Storage::BLOCK_SIZE;
@@ -288,7 +288,7 @@ TEST_CASE("Test buffer manager variable size allocations", "[storage][.]") {
 	DuckDB db(storage_database, config.get());
 	Connection con(db);
 
-	auto &buffer_manager = BufferManager::GetBufferManager(*con.context);
+	auto &buffer_manager = BufferManager::GetBufferManager(*con.clientContext);
 	CHECK(buffer_manager.GetUsedMemory() == 0);
 
 	idx_t requested_size = 424242;
@@ -309,7 +309,7 @@ TEST_CASE("Test buffer manager buffer re-use", "[storage][.]") {
 	DuckDB db(storage_database, config.get());
 	Connection con(db);
 
-	auto &buffer_manager = BufferManager::GetBufferManager(*con.context);
+	auto &buffer_manager = BufferManager::GetBufferManager(*con.clientContext);
 	CHECK(buffer_manager.GetUsedMemory() == 0);
 
 	// Set memory limit to hold exactly 10 blocks
@@ -397,7 +397,7 @@ TEST_CASE("Test buffer allocator", "[storage][.]") {
 	DuckDB db(storage_database, config.get());
 	Connection con(db);
 
-	auto &buffer_manager = BufferManager::GetBufferManager(*con.context);
+	auto &buffer_manager = BufferManager::GetBufferManager(*con.clientContext);
 	CHECK(buffer_manager.GetUsedMemory() == 0);
 
 	const idx_t limit = 1000000000;

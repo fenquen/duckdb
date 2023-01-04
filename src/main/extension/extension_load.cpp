@@ -23,7 +23,7 @@ static T LoadFunctionFromDLL(void *dll, const string &function_name, const strin
 }
 
 ExtensionInitResult ExtensionHelper::InitialLoad(DBConfig &config, FileOpener *opener, const string &extension) {
-	if (!config.options.enable_external_access) {
+	if (!config.dbConfigOptions.enable_external_access) {
 		throw PermissionException("Loading external extensions is disabled through configuration");
 	}
 	VirtualFileSystem fallback_file_system; // config may not contain one yet
@@ -70,7 +70,7 @@ ExtensionInitResult ExtensionHelper::InitialLoad(DBConfig &config, FileOpener *o
 				break;
 			}
 		}
-		if (!any_valid && !config.options.allow_unsigned_extensions) {
+		if (!any_valid && !config.dbConfigOptions.allow_unsigned_extensions) {
 			throw IOException(config.error_manager->FormatException(ErrorType::UNSIGNED_EXTENSION, filename));
 		}
 	}

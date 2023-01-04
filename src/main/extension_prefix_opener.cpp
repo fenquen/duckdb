@@ -15,7 +15,7 @@ struct ExtensionPrefixOpenData : public ReplacementOpenData {
 };
 
 static unique_ptr<ReplacementOpenData> ExtensionPrefixPreOpen(DBConfig &config, ReplacementOpenStaticData *) {
-	auto path = config.options.database_path;
+	auto path = config.dbConfigOptions.database_path;
 	auto first_colon = path.find(':');
 	if (first_colon == string::npos || first_colon < 2) { // needs to be at least two characters because windows c: ...
 		return nullptr;
@@ -43,13 +43,13 @@ static void ExtensionPrefixPostOpen(DatabaseInstance &instance, ReplacementOpenD
 	auto prefix_open_data = (ExtensionPrefixOpenData *)open_data;
 
 	Connection con(instance);
-	ExtensionHelper::LoadExternalExtension(*con.context, prefix_open_data->extension);
-	ExtensionHelper::ReplacementOpenPost(*con.context, prefix_open_data->extension, instance,
-	                                     prefix_open_data->data.get());
+	ExtensionHelper::LoadExternalExtension(*con.clientContext, prefix_open_data->extension);
+	ExtensionHelper::ReplacementOpenPost(*con.clientContext, prefix_open_data->extension, instance,
+										 prefix_open_data->data.get());
 }
 
-ExtensionPrefixReplacementOpen::ExtensionPrefixReplacementOpen()
-    : ReplacementOpen(ExtensionPrefixPreOpen, ExtensionPrefixPostOpen) {
+ExtensionPrefixReplacementOpen::ExtensionPrefixReplacementOpen(): ReplacementOpen(ExtensionPrefixPreOpen,
+                                                                                  ExtensionPrefixPostOpen) {
 }
 
 } // namespace duckdb

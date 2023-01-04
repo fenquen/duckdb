@@ -58,7 +58,7 @@ string ExtensionHelper::ExtensionDirectory(ClientContext &context) {
 
 void ExtensionHelper::InstallExtension(ClientContext &context, const string &extension, bool force_install) {
 	auto &config = DBConfig::GetConfig(context);
-	if (!config.options.enable_external_access) {
+	if (!config.dbConfigOptions.enable_external_access) {
 		throw PermissionException("Installing extensions is disabled through configuration");
 	}
 	auto &fs = FileSystem::GetFileSystem(context);

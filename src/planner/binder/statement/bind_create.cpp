@@ -157,8 +157,8 @@ void Binder::BindLogicalType(ClientContext &context, LogicalType &type, const st
 		type = catalog.GetType(context, schema, UserType::GetTypeName(type));
 	} else if (type.id() == LogicalTypeId::ENUM) {
 		auto &enum_type_name = EnumType::GetTypeName(type);
-		auto enum_type_catalog = (TypeCatalogEntry *)context.db->GetCatalog().GetEntry(context, CatalogType::TYPE_ENTRY,
-		                                                                               schema, enum_type_name, true);
+		auto enum_type_catalog = (TypeCatalogEntry *)context.databaseInstance->GetCatalog().GetEntry(context, CatalogType::TYPE_ENTRY,
+                                                                                                     schema, enum_type_name, true);
 		LogicalType::SetCatalog(type, enum_type_catalog);
 	}
 }

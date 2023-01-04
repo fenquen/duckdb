@@ -14,33 +14,33 @@ void PhysicalTransaction::GetData(ExecutionContext &context, DataChunk &chunk, G
 	}
 	switch (type) {
 	case TransactionType::BEGIN_TRANSACTION: {
-		if (client.transaction.IsAutoCommit()) {
+		if (client.transactionContext.IsAutoCommit()) {
 			// start the active transaction
 			// if autocommit is active, we have already called
 			// BeginTransaction by setting autocommit to false we
 			// prevent it from being closed after this query, hence
 			// preserving the transaction context for the next query
-			client.transaction.SetAutoCommit(false);
+			client.transactionContext.SetAutoCommit(false);
 		} else {
 			throw TransactionException("cannot start a transaction within a transaction");
 		}
 		break;
 	}
 	case TransactionType::COMMIT: {
-		if (client.transaction.IsAutoCommit()) {
+		if (client.transactionContext.IsAutoCommit()) {
 			throw TransactionException("cannot commit - no transaction is active");
 		} else {
 			// explicitly commit the current transaction
-			client.transaction.Commit();
+			client.transactionContext.Commit();
 		}
 		break;
 	}
 	case TransactionType::ROLLBACK: {
-		if (client.transaction.IsAutoCommit()) {
+		if (client.transactionContext.IsAutoCommit()) {
 			throw TransactionException("cannot rollback - no transaction is active");
 		} else {
 			// explicitly rollback the current transaction
-			client.transaction.Rollback();
+			client.transactionContext.Rollback();
 		}
 		break;
 	}

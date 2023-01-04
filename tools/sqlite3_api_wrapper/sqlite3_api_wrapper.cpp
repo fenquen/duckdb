@@ -101,12 +101,12 @@ int sqlite3_open_v2(const char *filename, /* Database filename (UTF-8) */
 	try {
 		pDb = new sqlite3();
 		DBConfig config;
-		config.options.access_mode = AccessMode::AUTOMATIC;
+		config.dbConfigOptions.access_mode = AccessMode::AUTOMATIC;
 		if (flags & SQLITE_OPEN_READONLY) {
-			config.options.access_mode = AccessMode::READ_ONLY;
+			config.dbConfigOptions.access_mode = AccessMode::READ_ONLY;
 		}
 		if (flags & DUCKDB_UNSIGNED_EXTENSIONS) {
-			config.options.allow_unsigned_extensions = true;
+			config.dbConfigOptions.allow_unsigned_extensions = true;
 		}
 		config.error_manager->AddCustomError(
 		    ErrorType::UNSIGNED_EXTENSION,
@@ -162,7 +162,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 		*pzTail = zSql + query.size();
 	}
 	try {
-		Parser parser(db->con->context->GetParserOptions());
+		Parser parser(db->con->clientContext->GetParserOptions());
 		parser.ParseQuery(query);
 		if (parser.statements.size() == 0) {
 			return SQLITE_OK;
@@ -175,7 +175,7 @@ int sqlite3_prepare_v2(sqlite3 *db,           /* Database handle */
 		vector<unique_ptr<SQLStatement>> statements;
 		statements.push_back(move(parser.statements[0]));
 
-		db->con->context->HandlePragmaStatements(statements);
+		db->con->clientContext->HandlePragmaStatements(statements);
 
 		// if there are multiple statements here, we are dealing with an import database statement
 		// we directly execute all statements besides the final one
@@ -264,7 +264,7 @@ char *sqlite3_print_duckbox(sqlite3_stmt *pStmt, size_t max_rows, char *null_val
 	}
 	BoxRenderer renderer(config);
 	auto result_rendering =
-	    renderer.ToString(*pStmt->db->con->context, pStmt->result->names, materialized.Collection());
+	    renderer.ToString(*pStmt->db->con->clientContext, pStmt->result->names, materialized.Collection());
 	return sqlite3_strdup(result_rendering.c_str());
 }
 
@@ -509,7 +509,7 @@ static bool sqlite3_column_has_value(sqlite3_stmt *pStmt, int iCol, LogicalType 
 	}
 	try {
 		val =
-		    pStmt->current_chunk->data[iCol].GetValue(pStmt->current_row).CastAs(*pStmt->db->con->context, target_type);
+		    pStmt->current_chunk->data[iCol].GetValue(pStmt->current_row).CastAs(*pStmt->db->con->clientContext, target_type);
 	} catch (...) {
 		return false;
 	}
@@ -1061,7 +1061,7 @@ int sqlite3_db_config(sqlite3 *, int op, ...) {
 }
 
 int sqlite3_get_autocommit(sqlite3 *db) {
-	return db->con->context->transaction.IsAutoCommit();
+	return db->con->clientContext->transactionContext.IsAutoCommit();
 }
 
 int sqlite3_limit(sqlite3 *, int id, int newVal) {
@@ -1240,7 +1240,7 @@ int sqlite3_create_function(sqlite3 *db, const char *zFunctionName, int nArg, in
 		argv_types[i] = LogicalType::ANY;
 	}
 
-	UDFWrapper::RegisterFunction(fname, argv_types, LogicalType::VARCHAR, udf_sqlite3, *(db->con->context), varargs);
+	UDFWrapper::RegisterFunction(fname, argv_types, LogicalType::VARCHAR, udf_sqlite3, *(db->con->clientContext), varargs);
 	return SQLITE_OK;
 }
 

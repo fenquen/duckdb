@@ -14,45 +14,47 @@
 #include "duckdb/common/vector.hpp"
 
 namespace duckdb {
-class ClientContext;
-class DatabaseInstance;
+    class ClientContext;
 
-class ConnectionManager {
-public:
-	ConnectionManager() {
-	}
+    class DatabaseInstance;
 
-	void AddConnection(ClientContext &context) {
-		lock_guard<mutex> lock(connections_lock);
-		connections.insert(make_pair(&context, weak_ptr<ClientContext>(context.shared_from_this())));
-	}
+    class ConnectionManager {
+    public:
+        ConnectionManager() {
+        }
 
-	void RemoveConnection(ClientContext &context) {
-		lock_guard<mutex> lock(connections_lock);
-		connections.erase(&context);
-	}
+        void AddConnection(ClientContext &context) {
+            lock_guard<mutex> lock(connections_lock);
+            connections.insert(make_pair(&context, weak_ptr<ClientContext>(context.shared_from_this())));
+        }
 
-	vector<shared_ptr<ClientContext>> GetConnectionList() {
-		vector<shared_ptr<ClientContext>> result;
-		for (auto &it : connections) {
-			auto connection = it.second.lock();
-			if (!connection) {
-				connections.erase(it.first);
-				continue;
-			} else {
-				result.push_back(move(connection));
-			}
-		}
+        void RemoveConnection(ClientContext &context) {
+            lock_guard<mutex> lock(connections_lock);
+            connections.erase(&context);
+        }
 
-		return result;
-	}
+        vector<shared_ptr<ClientContext>> GetConnectionList() {
+            vector<shared_ptr<ClientContext>> result;
+            for (auto &it: connections) {
+                auto connection = it.second.lock();
+                if (!connection) {
+                    connections.erase(it.first);
+                    continue;
+                }
 
-	static ConnectionManager &Get(DatabaseInstance &db);
-	static ConnectionManager &Get(ClientContext &context);
+                result.push_back(move(connection));
+            }
 
-public:
-	mutex connections_lock;
-	unordered_map<ClientContext *, weak_ptr<ClientContext>> connections;
-};
+            return result;
+        }
+
+        static ConnectionManager &Get(DatabaseInstance &databaseInstance);
+
+        static ConnectionManager &Get(ClientContext &context);
+
+    public:
+        mutex connections_lock;
+        unordered_map<ClientContext *, weak_ptr<ClientContext>> connections;
+    };
 
 } // namespace duckdb
