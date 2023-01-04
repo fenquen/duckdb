@@ -3,91 +3,92 @@
 
 namespace duckdb {
 
-ArenaChunk::ArenaChunk(Allocator &allocator, idx_t size) : current_position(0), maximum_size(size), prev(nullptr) {
-	D_ASSERT(size > 0);
-	data = allocator.Allocate(size);
-}
-ArenaChunk::~ArenaChunk() {
-	if (next) {
-		auto current_next = move(next);
-		while (current_next) {
-			current_next = move(current_next->next);
-		}
-	}
-}
+    ArenaChunk::ArenaChunk(Allocator &allocator, idx_t size) : current_position(0), maximum_size(size), prev(nullptr) {
+        D_ASSERT(size > 0);
+        data = allocator.Allocate(size);
+    }
 
-ArenaAllocator::ArenaAllocator(Allocator &allocator, idx_t initial_capacity) : allocator(allocator) {
-	head = nullptr;
-	tail = nullptr;
-	current_capacity = initial_capacity;
-}
+    ArenaChunk::~ArenaChunk() {
+        if (next) {
+            auto current_next = move(next);
+            while (current_next) {
+                current_next = move(current_next->next);
+            }
+        }
+    }
 
-ArenaAllocator::~ArenaAllocator() {
-}
+    ArenaAllocator::ArenaAllocator(Allocator &allocator, idx_t initial_capacity) : allocator(allocator) {
+        head = nullptr;
+        tail = nullptr;
+        current_capacity = initial_capacity;
+    }
 
-data_ptr_t ArenaAllocator::Allocate(idx_t len) {
-	D_ASSERT(!head || head->current_position <= head->maximum_size);
-	if (!head || head->current_position + len > head->maximum_size) {
-		do {
-			current_capacity *= 2;
-		} while (current_capacity < len);
-		auto new_chunk = make_unique<ArenaChunk>(allocator, current_capacity);
-		if (head) {
-			head->prev = new_chunk.get();
-			new_chunk->next = move(head);
-		} else {
-			tail = new_chunk.get();
-		}
-		head = move(new_chunk);
-	}
-	D_ASSERT(head->current_position + len <= head->maximum_size);
-	auto result = head->data.get() + head->current_position;
-	head->current_position += len;
-	return result;
-}
+    ArenaAllocator::~ArenaAllocator() {
+    }
 
-void ArenaAllocator::Reset() {
+    data_ptr_t ArenaAllocator::Allocate(idx_t len) {
+        D_ASSERT(!head || head->current_position <= head->maximum_size);
+        if (!head || head->current_position + len > head->maximum_size) {
+            do {
+                current_capacity *= 2;
+            } while (current_capacity < len);
+            auto new_chunk = make_unique<ArenaChunk>(allocator, current_capacity);
+            if (head) {
+                head->prev = new_chunk.get();
+                new_chunk->next = move(head);
+            } else {
+                tail = new_chunk.get();
+            }
+            head = move(new_chunk);
+        }
+        D_ASSERT(head->current_position + len <= head->maximum_size);
+        auto result = head->data.get() + head->current_position;
+        head->current_position += len;
+        return result;
+    }
 
-	if (head) {
-		// destroy all chunks except the current one
-		if (head->next) {
-			auto current_next = move(head->next);
-			while (current_next) {
-				current_next = move(current_next->next);
-			}
-		}
-		tail = head.get();
+    void ArenaAllocator::Reset() {
 
-		// reset the head
-		head->current_position = 0;
-		head->prev = nullptr;
-	}
-}
+        if (head) {
+            // destroy all chunks except the current one
+            if (head->next) {
+                auto current_next = move(head->next);
+                while (current_next) {
+                    current_next = move(current_next->next);
+                }
+            }
+            tail = head.get();
 
-void ArenaAllocator::Destroy() {
-	head = nullptr;
-	tail = nullptr;
-	current_capacity = ARENA_ALLOCATOR_INITIAL_CAPACITY;
-}
+            // reset the head
+            head->current_position = 0;
+            head->prev = nullptr;
+        }
+    }
 
-void ArenaAllocator::Move(ArenaAllocator &other) {
-	D_ASSERT(!other.head);
-	other.tail = tail;
-	other.head = move(head);
-	other.current_capacity = current_capacity;
-	Destroy();
-}
+    void ArenaAllocator::Destroy() {
+        head = nullptr;
+        tail = nullptr;
+        current_capacity = ARENA_ALLOCATOR_INITIAL_CAPACITY;
+    }
 
-ArenaChunk *ArenaAllocator::GetHead() {
-	return head.get();
-}
+    void ArenaAllocator::Move(ArenaAllocator &other) {
+        D_ASSERT(!other.head);
+        other.tail = tail;
+        other.head = move(head);
+        other.current_capacity = current_capacity;
+        Destroy();
+    }
 
-ArenaChunk *ArenaAllocator::GetTail() {
-	return tail;
-}
+    ArenaChunk *ArenaAllocator::GetHead() {
+        return head.get();
+    }
 
-bool ArenaAllocator::IsEmpty() {
-	return head == nullptr;
-}
+    ArenaChunk *ArenaAllocator::GetTail() {
+        return tail;
+    }
+
+    bool ArenaAllocator::IsEmpty() {
+        return head == nullptr;
+    }
 
 } // namespace duckdb

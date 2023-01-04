@@ -263,7 +263,9 @@ namespace duckdb {
 
         void BeginQueryInternal(ClientContextLock &lock, const string &query);
 
-        PreservedError EndQueryInternal(ClientContextLock &lock, bool success, bool invalidate_transaction);
+        PreservedError EndQueryInternal(ClientContextLock &lock,
+                                        bool success,
+                                        bool invalidate_transaction);
 
         PendingExecutionResult ExecuteTaskInternal(ClientContextLock &lock, PendingQueryResult &result);
 

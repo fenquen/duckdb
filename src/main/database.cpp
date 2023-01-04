@@ -104,8 +104,8 @@ namespace duckdb {
         return db.dbConfig;
     }
 
-    const ClientConfig &ClientConfig::GetConfig(const ClientContext &context) {
-        return context.config;
+    const ClientConfig &ClientConfig::GetConfig(const ClientContext &clientContext) {
+        return clientContext.config;
     }
 
     TransactionManager &TransactionManager::Get(ClientContext &context) {

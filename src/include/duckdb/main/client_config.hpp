@@ -84,7 +84,7 @@ struct ClientConfig {
 
 public:
 	static ClientConfig &GetConfig(ClientContext &context);
-	static const ClientConfig &GetConfig(const ClientContext &context);
+	static const ClientConfig &GetConfig(const ClientContext &clientContext);
 
 	static string ExtractTimezoneFromConfig(ClientConfig &config);
 
