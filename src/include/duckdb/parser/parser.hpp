@@ -39,11 +39,11 @@ namespace duckdb {
         vector<unique_ptr<SQLStatement>> statements;
 
     public:
-        //! Attempts to parse a query into a series of SQL statements. Returns
+        //! Attempts to parse a querySql into a series of SQL statements. Returns
         //! whether or not the parsing was successful. If the parsing was
         //! successful, the parsed statements will be stored in the statements
         //! variable.
-        void ParseQuery(const string &query);
+        void ParseQuery(const string &querySql);
 
         //! Tokenize a query, returning the raw tokens together with their locations
         static vector<SimplifiedToken> Tokenize(const string &query);

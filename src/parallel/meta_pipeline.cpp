@@ -67,17 +67,18 @@ void MetaPipeline::AssignNextBatchIndex(Pipeline *pipeline) {
 	pipeline->base_batch_index = next_batch_index++ * PipelineBuildState::BATCH_INCREMENT;
 }
 
-void MetaPipeline::Build(PhysicalOperator *op) {
+void MetaPipeline::Build(PhysicalOperator *physicalPlan) {
 	D_ASSERT(pipelines.size() == 1);
 	D_ASSERT(children.empty());
 	D_ASSERT(final_pipelines.empty());
-	op->BuildPipelines(*pipelines.back(), *this);
+	physicalPlan->BuildPipelines(*pipelines.back(), *this);
 }
 
 void MetaPipeline::Ready() {
 	for (auto &pipeline : pipelines) {
 		pipeline->Ready();
 	}
+
 	for (auto &child : children) {
 		child->Ready();
 	}

@@ -73,7 +73,9 @@ unique_ptr<GlobalSourceState> PhysicalTableScan::GetGlobalSourceState(ClientCont
 	return make_unique<TableScanGlobalSourceState>(context, *this);
 }
 
-void PhysicalTableScan::GetData(ExecutionContext &context, DataChunk &chunk, GlobalSourceState &gstate_p,
+void PhysicalTableScan::GetData(ExecutionContext &context,
+                                DataChunk &chunk,
+                                GlobalSourceState &gstate_p,
                                 LocalSourceState &lstate) const {
 	D_ASSERT(!column_ids.empty());
 	auto &gstate = (TableScanGlobalSourceState &)gstate_p;

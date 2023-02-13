@@ -12,14 +12,19 @@
 
 namespace duckdb {
 
-enum class TransactionType : uint8_t { INVALID, BEGIN_TRANSACTION, COMMIT, ROLLBACK };
+    enum class TransactionType : uint8_t {
+        INVALID,
+        BEGIN_TRANSACTION,
+        COMMIT,
+        ROLLBACK
+    };
 
-struct TransactionInfo : public ParseInfo {
-	explicit TransactionInfo(TransactionType type) : type(type) {
-	}
+    struct TransactionInfo : public ParseInfo {
+        explicit TransactionInfo(TransactionType transactionType) : type(transactionType) {
+        }
 
-	//! The type of transaction statement
-	TransactionType type;
-};
+        //! The type of transaction statement
+        TransactionType type;
+    };
 
 } // namespace duckdb

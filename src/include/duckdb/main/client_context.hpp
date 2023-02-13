@@ -61,6 +61,7 @@ namespace duckdb {
     struct PendingQueryParameters {
         //! Prepared statement parameters (if any)
         vector<Value> *parameters = nullptr;
+
         //! Whether or not a stream result should be allowed
         bool allow_stream_result = false;
     };
@@ -209,13 +210,15 @@ namespace duckdb {
                              PreservedError &error);
 
         //! Issues a query to the database and returns a Pending Query Result
-        unique_ptr<PendingQueryResult> PendingQueryInternal(ClientContextLock &lock, unique_ptr<SQLStatement> statement,
-                                                            PendingQueryParameters parameters, bool verify = true);
+        unique_ptr<PendingQueryResult> PendingQueryInternal(ClientContextLock &clientContextLock,
+                                                            unique_ptr<SQLStatement> sqlStatement,
+                                                            PendingQueryParameters pendingQueryParameters,
+                                                            bool verify = true);
 
         unique_ptr<QueryResult> ExecutePendingQueryInternal(ClientContextLock &lock, PendingQueryResult &query);
 
-        //! Parse statements from a query
-        vector<unique_ptr<SQLStatement>> ParseStatementsInternal(ClientContextLock &lock, const string &query);
+        //! Parse statements from a querySql
+        vector<unique_ptr<SQLStatement>> ParseStatementsInternal(ClientContextLock &clientContextLock, const string &querySql);
 
         //! Perform aggressive query verification of a SELECT statement. Only called when query_verification_enabled is true.
         PreservedError VerifyQuery(ClientContextLock &lock, const string &query, unique_ptr<SQLStatement> statement);
@@ -227,23 +230,25 @@ namespace duckdb {
                              BaseQueryResult *result = nullptr,
                              bool invalidate_transaction = false);
 
-        unique_ptr<PendingQueryResult> PendingStatementOrPreparedStatement(ClientContextLock &lock, const string &query,
-                                                                           unique_ptr<SQLStatement> statement,
-                                                                           shared_ptr<PreparedStatementData> &prepared,
-                                                                           PendingQueryParameters parameters);
+        unique_ptr<PendingQueryResult> PendingStmtOrPreparedStmt(ClientContextLock &clientContextLock,
+                                                                 const string &querySql,
+                                                                 unique_ptr<SQLStatement> sqlStatement,
+                                                                 shared_ptr<PreparedStatementData> &preparedStatementData,
+                                                                 PendingQueryParameters pendingQueryParameters);
 
         unique_ptr<PendingQueryResult> PendingPreparedStatement(ClientContextLock &lock,
-                                                                shared_ptr<PreparedStatementData> statement_p,
+                                                                shared_ptr<PreparedStatementData> preparedStatementData,
                                                                 PendingQueryParameters parameters);
 
-        //! Internally prepare a SQL statement. Caller must hold the context_lock.
-        shared_ptr<PreparedStatementData> CreatePreparedStatement(ClientContextLock &lock, const string &query,
-                                                                  unique_ptr<SQLStatement> statement,
+        //! Internally prepare a SQL sqlStatement. Caller must hold the context_lock.
+        shared_ptr<PreparedStatementData> CreatePreparedStatement(ClientContextLock &lock,
+                                                                  const string &query,
+                                                                  unique_ptr<SQLStatement> sqlStatement,
                                                                   vector<Value> *values = nullptr);
 
-        unique_ptr<PendingQueryResult> PendingStatementInternal(ClientContextLock &lock, const string &query,
-                                                                unique_ptr<SQLStatement> statement,
-                                                                PendingQueryParameters parameters);
+        unique_ptr<PendingQueryResult> PendingStatementInternal(ClientContextLock &clientContextLock, const string &querySql,
+                                                                unique_ptr<SQLStatement> sqlStatement,
+                                                                PendingQueryParameters pendingQueryParameters);
 
         unique_ptr<QueryResult> RunStatementInternal(ClientContextLock &lock, const string &query,
                                                      unique_ptr<SQLStatement> statement, bool allow_stream_result,
@@ -259,9 +264,9 @@ namespace duckdb {
 
         unique_ptr<ClientContextLock> LockContext();
 
-        void BeginTransactionInternal(ClientContextLock &lock, bool requires_valid_transaction);
+        void BeginTransactionInternal(ClientContextLock &lock, bool requireValidTransaction);
 
-        void BeginQueryInternal(ClientContextLock &lock, const string &query);
+        void BeginQueryInternal(ClientContextLock &clientContextLock, const string &querySql);
 
         PreservedError EndQueryInternal(ClientContextLock &lock,
                                         bool success,
@@ -269,11 +274,11 @@ namespace duckdb {
 
         PendingExecutionResult ExecuteTaskInternal(ClientContextLock &lock, PendingQueryResult &result);
 
-        unique_ptr<PendingQueryResult> PendingStatementOrPreparedStatementInternal(ClientContextLock &lock,
-                                                                                   const string &query,
-                                                                                   unique_ptr<SQLStatement> statement,
-                                                                                   shared_ptr<PreparedStatementData> &prepared,
-                                                                                   PendingQueryParameters parameters);
+        unique_ptr<PendingQueryResult> PendingStmtOrPreparedStmtInternal(ClientContextLock &lock,
+                                                                         const string &querySql,
+                                                                         unique_ptr<SQLStatement> sqlStatement,
+                                                                         shared_ptr<PreparedStatementData> &preparedStatementData,
+                                                                         PendingQueryParameters pendingQueryParameters);
 
         unique_ptr<PendingQueryResult> PendingQueryPreparedInternal(ClientContextLock &lock, const string &query,
                                                                     shared_ptr<PreparedStatementData> &prepared,
@@ -293,8 +298,7 @@ namespace duckdb {
         explicit ClientContextLock(mutex &context_lock) : client_guard(context_lock) {
         }
 
-        ~ClientContextLock() {
-        }
+        ~ClientContextLock() = default;
 
     private:
         lock_guard<mutex> client_guard;

@@ -4,7 +4,7 @@ project(example-c++)
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(../../src/include)
-link_directories(../../cmake-build-debug/src)
+#link_directories(../../cmake-build-debug/src)
 
 add_executable(example main.cpp)
 target_link_libraries(example duckdb)

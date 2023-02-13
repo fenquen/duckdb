@@ -13,43 +13,51 @@
 #include "duckdb/execution/executor.hpp"
 
 namespace duckdb {
-class ClientContext;
-class ClientContextLock;
-class PreparedStatementData;
+    class ClientContext;
 
-class PendingQueryResult : public BaseQueryResult {
-	friend class ClientContext;
+    class ClientContextLock;
 
-public:
-	DUCKDB_API PendingQueryResult(shared_ptr<ClientContext> context, PreparedStatementData &statement,
-	                              vector<LogicalType> types, bool allow_stream_result);
-	DUCKDB_API explicit PendingQueryResult(PreservedError error_message);
-	DUCKDB_API ~PendingQueryResult();
+    class PreparedStatementData;
 
-public:
-	//! Executes a single task within the query, returning whether or not the query is ready.
-	//! If this returns RESULT_READY, the Execute function can be called to obtain a pointer to the result.
-	//! If this returns RESULT_NOT_READY, the ExecuteTask function should be called again.
-	//! If this returns EXECUTION_ERROR, an error occurred during execution.
-	//! The error message can be obtained by calling GetError() on the PendingQueryResult.
-	DUCKDB_API PendingExecutionResult ExecuteTask();
+    class PendingQueryResult : public BaseQueryResult {
+        friend class ClientContext;
 
-	//! Returns the result of the query as an actual query result.
-	//! This returns (mostly) instantly if ExecuteTask has been called until RESULT_READY was returned.
-	DUCKDB_API unique_ptr<QueryResult> Execute();
+    public:
+        DUCKDB_API PendingQueryResult(shared_ptr<ClientContext> context,
+                                      PreparedStatementData &statement,
+                                      vector<LogicalType> types,
+                                      bool allow_stream_result);
 
-	DUCKDB_API void Close();
+        DUCKDB_API explicit PendingQueryResult(PreservedError error_message);
 
-private:
-	shared_ptr<ClientContext> context;
-	bool allow_stream_result;
+        DUCKDB_API ~PendingQueryResult();
 
-private:
-	void CheckExecutableInternal(ClientContextLock &lock);
+    public:
+        //! Executes a single task within the query, returning whether or not the query is ready.
+        //! If this returns RESULT_READY, the Execute function can be called to obtain a pointer to the result.
+        //! If this returns RESULT_NOT_READY, the ExecuteTask function should be called again.
+        //! If this returns EXECUTION_ERROR, an error occurred during execution.
+        //! The error message can be obtained by calling GetError() on the PendingQueryResult.
+        DUCKDB_API PendingExecutionResult ExecuteTask();
 
-	PendingExecutionResult ExecuteTaskInternal(ClientContextLock &lock);
-	unique_ptr<QueryResult> ExecuteInternal(ClientContextLock &lock);
-	unique_ptr<ClientContextLock> LockContext();
-};
+        //! Returns the result of the query as an actual query result.
+        //! This returns (mostly) instantly if ExecuteTask has been called until RESULT_READY was returned.
+        DUCKDB_API unique_ptr<QueryResult> Execute();
+
+        DUCKDB_API void Close();
+
+    private:
+        shared_ptr<ClientContext> context;
+        bool allow_stream_result;
+
+    private:
+        void CheckExecutableInternal(ClientContextLock &lock);
+
+        PendingExecutionResult ExecuteTaskInternal(ClientContextLock &lock);
+
+        unique_ptr<QueryResult> ExecuteInternal(ClientContextLock &lock);
+
+        unique_ptr<ClientContextLock> LockContext();
+    };
 
 } // namespace duckdb

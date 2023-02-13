@@ -20,8 +20,7 @@ namespace duckdb {
 
     class ConnectionManager {
     public:
-        ConnectionManager() {
-        }
+        ConnectionManager() = default;
 
         void AddConnection(ClientContext &context) {
             lock_guard<mutex> lock(connections_lock);

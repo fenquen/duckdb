@@ -13,7 +13,7 @@ BoundStatement Binder::Bind(ExtensionStatement &stmt) {
 
 	properties.read_only = parse_result.read_only;
 	properties.requires_valid_transaction = parse_result.requires_valid_transaction;
-	properties.return_type = parse_result.return_type;
+	properties.statementReturnType = parse_result.return_type;
 
 	// create the plan as a scan of the given table function
 	result.plan = BindTableFunction(parse_result.function, move(parse_result.parameters));

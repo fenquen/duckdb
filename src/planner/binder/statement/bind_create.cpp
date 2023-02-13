@@ -333,7 +333,7 @@ BoundStatement Binder::Bind(CreateStatement &stmt) {
 	BoundStatement result;
 	result.names = {"Count"};
 	result.types = {LogicalType::BIGINT};
-	properties.return_type = StatementReturnType::NOTHING;
+	properties.statementReturnType = StatementReturnType::NOTHING;
 
 	auto catalog_type = stmt.info->type;
 	switch (catalog_type) {
@@ -465,7 +465,7 @@ BoundStatement Binder::Bind(CreateStatement &stmt) {
 		auto create_table = make_unique<LogicalCreateTable>(schema, move(bound_info));
 		if (root) {
 			// CREATE TABLE AS
-			properties.return_type = StatementReturnType::CHANGED_ROWS;
+			properties.statementReturnType = StatementReturnType::CHANGED_ROWS;
 			create_table->children.push_back(move(root));
 		}
 		result.plan = move(create_table);

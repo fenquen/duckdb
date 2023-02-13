@@ -243,7 +243,7 @@ char *sqlite3_print_duckbox(sqlite3_stmt *pStmt, size_t max_rows, char *null_val
 	}
 	auto &materialized = (MaterializedQueryResult &)*pStmt->result;
 	auto properties = pStmt->prepared->GetStatementProperties();
-	if (properties.return_type == StatementReturnType::CHANGED_ROWS && materialized.RowCount() > 0) {
+	if (properties.statementReturnType == StatementReturnType::CHANGED_ROWS && materialized.RowCount() > 0) {
 		// update total changes
 		auto row_changes = materialized.Collection().GetRows().GetValue(0, 0);
 		if (!row_changes.IsNull() && row_changes.DefaultTryCastAs(LogicalType::BIGINT)) {
@@ -251,7 +251,7 @@ char *sqlite3_print_duckbox(sqlite3_stmt *pStmt, size_t max_rows, char *null_val
 			pStmt->db->total_changes += row_changes.GetValue<int64_t>();
 		}
 	}
-	if (properties.return_type != StatementReturnType::QUERY_RESULT) {
+	if (properties.statementReturnType != StatementReturnType::QUERY_RESULT) {
 		// only SELECT statements return results
 		return nullptr;
 	}
@@ -296,7 +296,7 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
 		pStmt->current_row = -1;
 
 		auto properties = pStmt->prepared->GetStatementProperties();
-		if (properties.return_type == StatementReturnType::CHANGED_ROWS && pStmt->current_chunk &&
+		if (properties.statementReturnType == StatementReturnType::CHANGED_ROWS && pStmt->current_chunk &&
 		    pStmt->current_chunk->size() > 0) {
 			// update total changes
 			auto row_changes = pStmt->current_chunk->GetValue(0, 0);
@@ -305,7 +305,7 @@ int sqlite3_step(sqlite3_stmt *pStmt) {
 				pStmt->db->total_changes += row_changes.GetValue<int64_t>();
 			}
 		}
-		if (properties.return_type != StatementReturnType::QUERY_RESULT) {
+		if (properties.statementReturnType != StatementReturnType::QUERY_RESULT) {
 			// only SELECT statements return results
 			sqlite3_reset(pStmt);
 		}

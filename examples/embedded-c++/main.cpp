@@ -3,7 +3,8 @@
 using namespace duckdb;
 
 int main() {
-	DuckDB duckDb("/Users/a/github/duckdb/data.db");
+
+	DuckDB duckDb("/home/a/github/duckdb/data.db");
 
 	Connection connection(duckDb);
 

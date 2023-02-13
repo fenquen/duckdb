@@ -33,9 +33,9 @@ public:
 	unordered_map<idx_t, std::shared_ptr<ColumnDataCollection>> recursive_cte_tables;
 
 public:
-	//! Creates a plan from the logical operator. This involves resolving column bindings and generating physical
+	//! Creates a plan from the logicalPlan operator. This involves resolving column bindings and generating physical
 	//! operator nodes.
-	unique_ptr<PhysicalOperator> CreatePlan(unique_ptr<LogicalOperator> logical);
+	unique_ptr<PhysicalOperator> CreatePlan(unique_ptr<LogicalOperator> logicalPlan);
 
 	//! Whether or not we can (or should) use a batch-index based operator for executing the given sink
 	static bool UseBatchIndex(ClientContext &context, PhysicalOperator &plan);
@@ -43,7 +43,7 @@ public:
 	static bool PreserveInsertionOrder(ClientContext &context, PhysicalOperator &plan);
 
 protected:
-	unique_ptr<PhysicalOperator> CreatePlan(LogicalOperator &op);
+	unique_ptr<PhysicalOperator> CreatePlan(LogicalOperator &logicalPlan);
 
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalAggregate &op);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalAnyJoin &op);
@@ -80,7 +80,7 @@ protected:
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalSample &op);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalSet &op);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalShow &op);
-	unique_ptr<PhysicalOperator> CreatePlan(LogicalSimple &op);
+	unique_ptr<PhysicalOperator> CreatePlan(LogicalSimple &logicalSimple);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalUnnest &op);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalRecursiveCTE &op);
 	unique_ptr<PhysicalOperator> CreatePlan(LogicalCTERef &op);

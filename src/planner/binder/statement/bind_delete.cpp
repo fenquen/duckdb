@@ -89,7 +89,7 @@ BoundStatement Binder::Bind(DeleteStatement &stmt) {
 	result.names = {"Count"};
 	result.types = {LogicalType::BIGINT};
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::CHANGED_ROWS;
+	properties.statementReturnType = StatementReturnType::CHANGED_ROWS;
 
 	return result;
 }

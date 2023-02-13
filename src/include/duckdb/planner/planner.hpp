@@ -14,35 +14,38 @@
 #include "duckdb/planner/expression/bound_parameter_data.hpp"
 
 namespace duckdb {
-class ClientContext;
-class PreparedStatementData;
+    class ClientContext;
+
+    class PreparedStatementData;
 
 //! The planner creates a logical query plan from the parsed SQL statements
 //! using the Binder and LogicalPlanGenerator.
-class Planner {
-	friend class Binder;
+    class Planner {
+        friend class Binder;
 
-public:
-	explicit Planner(ClientContext &context);
+    public:
+        explicit Planner(ClientContext &clientContext);
 
-	unique_ptr<LogicalOperator> plan;
-	vector<string> names;
-	vector<LogicalType> types;
-	bound_parameter_map_t value_map;
-	vector<BoundParameterData> parameter_data;
+        unique_ptr<LogicalOperator> plan;
+        vector<string> names;
+        vector<LogicalType> types;
+        bound_parameter_map_t value_map;
+        vector<BoundParameterData> parameter_data;
 
-	shared_ptr<Binder> binder;
-	ClientContext &context;
+        shared_ptr<Binder> binder;
+        ClientContext &context;
 
-	StatementProperties properties;
+        StatementProperties properties;
 
-public:
-	void CreatePlan(unique_ptr<SQLStatement> statement);
-	static void VerifyPlan(ClientContext &context, unique_ptr<LogicalOperator> &op,
-	                       bound_parameter_map_t *map = nullptr);
+    public:
+        void CreatePlan(unique_ptr<SQLStatement> sqlStatement);
 
-private:
-	void CreatePlan(SQLStatement &statement);
-	shared_ptr<PreparedStatementData> PrepareSQLStatement(unique_ptr<SQLStatement> statement);
-};
+        static void VerifyPlan(ClientContext &context, unique_ptr<LogicalOperator> &op,
+                               bound_parameter_map_t *map = nullptr);
+
+    private:
+        void CreatePlan(SQLStatement &sqlStatement);
+
+        shared_ptr<PreparedStatementData> PrepareSQLStatement(unique_ptr<SQLStatement> statement);
+    };
 } // namespace duckdb

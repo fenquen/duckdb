@@ -100,8 +100,8 @@ TableCatalogEntry::TableCatalogEntry(Catalog *catalog, SchemaCatalogEntry *schem
 			storage_columns.push_back(col_def.Copy());
 		}
 		storage =
-		    make_shared<DataTable>(catalog->db, StorageManager::GetStorageManager(catalog->db).GetTableIOManager(info),
-		                           schema->name, name, move(storage_columns), move(info->data));
+		    make_shared<DataTable>(catalog->databaseInstance, StorageManager::GetStorageManager(catalog->databaseInstance).GetTableIOManager(info),
+                                   schema->name, name, move(storage_columns), move(info->data));
 
 		// create the unique indexes for the UNIQUE and PRIMARY KEY and FOREIGN KEY constraints
 		idx_t indexes_idx = 0;

@@ -12,30 +12,30 @@
 
 namespace duckdb {
 
-unique_ptr<PhysicalOperator> PhysicalPlanGenerator::CreatePlan(LogicalSimple &op) {
-	switch (op.type) {
-	case LogicalOperatorType::LOGICAL_ALTER:
-		return make_unique<PhysicalAlter>(unique_ptr_cast<ParseInfo, AlterInfo>(move(op.info)),
-		                                  op.estimated_cardinality);
-	case LogicalOperatorType::LOGICAL_DROP:
-		return make_unique<PhysicalDrop>(unique_ptr_cast<ParseInfo, DropInfo>(move(op.info)), op.estimated_cardinality);
-	case LogicalOperatorType::LOGICAL_TRANSACTION:
-		return make_unique<PhysicalTransaction>(unique_ptr_cast<ParseInfo, TransactionInfo>(move(op.info)),
-		                                        op.estimated_cardinality);
-	case LogicalOperatorType::LOGICAL_VACUUM: {
-		auto result = make_unique<PhysicalVacuum>(unique_ptr_cast<ParseInfo, VacuumInfo>(move(op.info)),
-		                                          op.estimated_cardinality);
-		if (!op.children.empty()) {
-			auto child = CreatePlan(*op.children[0]);
-			result->children.push_back(move(child));
-		}
-		return move(result);
-	}
-	case LogicalOperatorType::LOGICAL_LOAD:
-		return make_unique<PhysicalLoad>(unique_ptr_cast<ParseInfo, LoadInfo>(move(op.info)), op.estimated_cardinality);
-	default:
-		throw NotImplementedException("Unimplemented type for logical simple operator");
-	}
-}
+    unique_ptr<PhysicalOperator> PhysicalPlanGenerator::CreatePlan(LogicalSimple &logicalSimple) {
+        switch (logicalSimple.type) {
+            case LogicalOperatorType::LOGICAL_ALTER:
+                return make_unique<PhysicalAlter>(unique_ptr_cast<ParseInfo, AlterInfo>(move(logicalSimple.info)),
+                                                  logicalSimple.estimated_cardinality);
+            case LogicalOperatorType::LOGICAL_DROP:
+                return make_unique<PhysicalDrop>(unique_ptr_cast<ParseInfo, DropInfo>(move(logicalSimple.info)), logicalSimple.estimated_cardinality);
+            case LogicalOperatorType::LOGICAL_TRANSACTION:
+                return make_unique<PhysicalTransaction>(unique_ptr_cast<ParseInfo, TransactionInfo>(move(logicalSimple.info)),
+                                                        logicalSimple.estimated_cardinality);
+            case LogicalOperatorType::LOGICAL_VACUUM: {
+                auto result = make_unique<PhysicalVacuum>(unique_ptr_cast<ParseInfo, VacuumInfo>(move(logicalSimple.info)),
+                                                          logicalSimple.estimated_cardinality);
+                if (!logicalSimple.children.empty()) {
+                    auto child = CreatePlan(*logicalSimple.children[0]);
+                    result->children.push_back(move(child));
+                }
+                return move(result);
+            }
+            case LogicalOperatorType::LOGICAL_LOAD:
+                return make_unique<PhysicalLoad>(unique_ptr_cast<ParseInfo, LoadInfo>(move(logicalSimple.info)), logicalSimple.estimated_cardinality);
+            default:
+                throw NotImplementedException("Unimplemented type for logical simple operator");
+        }
+    }
 
 } // namespace duckdb

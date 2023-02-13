@@ -95,8 +95,8 @@ public:
 	vector<DummyBinding> *lambda_bindings = nullptr;
 
 public:
-	BoundStatement Bind(SQLStatement &statement);
-	BoundStatement Bind(QueryNode &node);
+	BoundStatement Bind(SQLStatement &sqlStatement);
+	BoundStatement Bind(QueryNode &queryNode);
 
 	unique_ptr<BoundCreateTableInfo> BindCreateTableInfo(unique_ptr<CreateInfo> info);
 	void BindCreateViewInfo(CreateViewInfo &base);
@@ -212,7 +212,7 @@ private:
 	BoundStatement Bind(AlterStatement &stmt);
 	BoundStatement Bind(PrepareStatement &stmt);
 	BoundStatement Bind(ExecuteStatement &stmt);
-	BoundStatement Bind(TransactionStatement &stmt);
+	BoundStatement Bind(TransactionStatement &transactionStatement);
 	BoundStatement Bind(PragmaStatement &stmt);
 	BoundStatement Bind(ExplainStatement &stmt);
 	BoundStatement Bind(VacuumStatement &stmt);
@@ -231,18 +231,18 @@ private:
 
 	unique_ptr<QueryNode> BindTableMacro(FunctionExpression &function, TableMacroCatalogEntry *macro_func, idx_t depth);
 
-	unique_ptr<BoundQueryNode> BindNode(SelectNode &node);
+	unique_ptr<BoundQueryNode> BindNode(SelectNode &selectNode);
 	unique_ptr<BoundQueryNode> BindNode(SetOperationNode &node);
 	unique_ptr<BoundQueryNode> BindNode(RecursiveCTENode &node);
-	unique_ptr<BoundQueryNode> BindNode(QueryNode &node);
+	unique_ptr<BoundQueryNode> BindNode(QueryNode &queryNode);
 
 	unique_ptr<LogicalOperator> VisitQueryNode(BoundQueryNode &node, unique_ptr<LogicalOperator> root);
 	unique_ptr<LogicalOperator> CreatePlan(BoundRecursiveCTENode &node);
-	unique_ptr<LogicalOperator> CreatePlan(BoundSelectNode &statement);
+	unique_ptr<LogicalOperator> CreatePlan(BoundSelectNode &boundSelectNode);
 	unique_ptr<LogicalOperator> CreatePlan(BoundSetOperationNode &node);
 	unique_ptr<LogicalOperator> CreatePlan(BoundQueryNode &node);
 
-	unique_ptr<BoundTableRef> Bind(BaseTableRef &ref);
+	unique_ptr<BoundTableRef> Bind(BaseTableRef &baseTableRef);
 	unique_ptr<BoundTableRef> Bind(CrossProductRef &ref);
 	unique_ptr<BoundTableRef> Bind(JoinRef &ref);
 	unique_ptr<BoundTableRef> Bind(SubqueryRef &ref, CommonTableExpressionInfo *cte = nullptr);

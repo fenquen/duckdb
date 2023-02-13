@@ -327,7 +327,7 @@ void Binder::ExpandStarExpressions(vector<unique_ptr<ParsedExpression>> &select_
 	}
 }
 
-unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
+unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &selectNode) {
 	auto result = make_unique<BoundSelectNode>();
 	result->projection_index = GenerateTableIndex();
 	result->group_index = GenerateTableIndex();
@@ -337,28 +337,28 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 	result->unnest_index = GenerateTableIndex();
 	result->prune_index = GenerateTableIndex();
 
-	// first bind the FROM table statement
-	result->from_table = Bind(*statement.from_table);
+	// first bind the FROM table selectNode
+	result->from_table = Bind(*selectNode.from_table);
 
 	// bind the sample clause
-	if (statement.sample) {
-		result->sample_options = move(statement.sample);
+	if (selectNode.sample) {
+		result->sample_options = move(selectNode.sample);
 	}
 
 	// visit the select list and expand any "*" statements
 	vector<unique_ptr<ParsedExpression>> new_select_list;
-	ExpandStarExpressions(statement.select_list, new_select_list);
+	ExpandStarExpressions(selectNode.select_list, new_select_list);
 
 	if (new_select_list.empty()) {
 		throw BinderException("SELECT list is empty after resolving * expressions!");
 	}
-	statement.select_list = move(new_select_list);
+    selectNode.select_list = move(new_select_list);
 
 	// create a mapping of (alias -> index) and a mapping of (Expression -> index) for the SELECT list
 	case_insensitive_map_t<idx_t> alias_map;
 	expression_map_t<idx_t> projection_map;
-	for (idx_t i = 0; i < statement.select_list.size(); i++) {
-		auto &expr = statement.select_list[i];
+	for (idx_t i = 0; i < selectNode.select_list.size(); i++) {
+		auto &expr = selectNode.select_list[i];
 		result->names.push_back(expr->GetName());
 		ExpressionBinder::QualifyColumnNames(*this, expr);
 		if (!expr->alias.empty()) {
@@ -368,28 +368,28 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 		projection_map[expr.get()] = i;
 		result->original_expressions.push_back(expr->Copy());
 	}
-	result->column_count = statement.select_list.size();
+	result->column_count = selectNode.select_list.size();
 
 	// first visit the WHERE clause
 	// the WHERE clause happens before the GROUP BY, PROJECTION or HAVING clauses
-	if (statement.where_clause) {
+	if (selectNode.where_clause) {
 		ColumnAliasBinder alias_binder(*result, alias_map);
 		WhereBinder where_binder(*this, context, &alias_binder);
-		unique_ptr<ParsedExpression> condition = move(statement.where_clause);
+		unique_ptr<ParsedExpression> condition = move(selectNode.where_clause);
 		result->where_clause = where_binder.Bind(condition);
 	}
 
 	// now bind all the result modifiers; including DISTINCT and ORDER BY targets
-	OrderBinder order_binder({this}, result->projection_index, statement, alias_map, projection_map);
-	BindModifiers(order_binder, statement, *result);
+	OrderBinder order_binder({this}, result->projection_index, selectNode, alias_map, projection_map);
+	BindModifiers(order_binder, selectNode, *result);
 
 	vector<unique_ptr<ParsedExpression>> unbound_groups;
 	BoundGroupInformation info;
-	auto &group_expressions = statement.groups.group_expressions;
+	auto &group_expressions = selectNode.groups.group_expressions;
 	if (!group_expressions.empty()) {
-		// the statement has a GROUP BY clause, bind it
+		// the selectNode has a GROUP BY clause, bind it
 		unbound_groups.resize(group_expressions.size());
-		GroupBinder group_binder(*this, context, statement, result->group_index, alias_map, info.alias_map);
+		GroupBinder group_binder(*this, context, selectNode, result->group_index, alias_map, info.alias_map);
 		for (idx_t i = 0; i < group_expressions.size(); i++) {
 
 			// we keep a copy of the unbound expression;
@@ -418,23 +418,23 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 			info.map[unbound_groups[i].get()] = i;
 		}
 	}
-	result->groups.grouping_sets = move(statement.groups.grouping_sets);
+	result->groups.grouping_sets = move(selectNode.groups.grouping_sets);
 
 	// bind the HAVING clause, if any
-	if (statement.having) {
-		HavingBinder having_binder(*this, context, *result, info, alias_map, statement.aggregate_handling);
-		ExpressionBinder::QualifyColumnNames(*this, statement.having);
-		result->having = having_binder.Bind(statement.having);
+	if (selectNode.having) {
+		HavingBinder having_binder(*this, context, *result, info, alias_map, selectNode.aggregate_handling);
+		ExpressionBinder::QualifyColumnNames(*this, selectNode.having);
+		result->having = having_binder.Bind(selectNode.having);
 	}
 
 	// bind the QUALIFY clause, if any
-	if (statement.qualify) {
-		if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
+	if (selectNode.qualify) {
+		if (selectNode.aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
 			throw BinderException("Combining QUALIFY with GROUP BY ALL is not supported yet");
 		}
 		QualifyBinder qualify_binder(*this, context, *result, info, alias_map);
-		ExpressionBinder::QualifyColumnNames(*this, statement.qualify);
-		result->qualify = qualify_binder.Bind(statement.qualify);
+		ExpressionBinder::QualifyColumnNames(*this, selectNode.qualify);
+		result->qualify = qualify_binder.Bind(selectNode.qualify);
 		if (qualify_binder.HasBoundColumns() && qualify_binder.BoundAggregates()) {
 			throw BinderException("Cannot mix aggregates with non-aggregated columns!");
 		}
@@ -443,11 +443,11 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 	// after that, we bind to the SELECT list
 	SelectBinder select_binder(*this, context, *result, info, alias_map);
 	vector<LogicalType> internal_sql_types;
-	for (idx_t i = 0; i < statement.select_list.size(); i++) {
-		bool is_window = statement.select_list[i]->IsWindow();
+	for (idx_t i = 0; i < selectNode.select_list.size(); i++) {
+		bool is_window = selectNode.select_list[i]->IsWindow();
 		LogicalType result_type;
-		auto expr = select_binder.Bind(statement.select_list[i], &result_type);
-		if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES && select_binder.HasBoundColumns()) {
+		auto expr = select_binder.Bind(selectNode.select_list[i], &result_type);
+		if (selectNode.aggregate_handling == AggregateHandling::FORCE_AGGREGATES && select_binder.HasBoundColumns()) {
 			if (select_binder.BoundAggregates()) {
 				throw BinderException("Cannot mix aggregates with non-aggregated columns!");
 			}
@@ -466,7 +466,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 			result->types.push_back(result_type);
 		}
 		internal_sql_types.push_back(result_type);
-		if (statement.aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
+		if (selectNode.aggregate_handling == AggregateHandling::FORCE_AGGREGATES) {
 			select_binder.ResetBindings();
 		}
 	}
@@ -476,11 +476,11 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 	// i.e. in the query [SELECT i, SUM(i) FROM integers;] the "i" will be bound as a normal column
 	// since we have an aggregation, we need to either (1) throw an error, or (2) wrap the column in a FIRST() aggregate
 	// we choose the former one [CONTROVERSIAL: this is the PostgreSQL behavior]
-	if (!result->groups.group_expressions.empty() || !result->aggregates.empty() || statement.having ||
-	    !result->groups.grouping_sets.empty()) {
-		if (statement.aggregate_handling == AggregateHandling::NO_AGGREGATES_ALLOWED) {
+	if (!result->groups.group_expressions.empty() || !result->aggregates.empty() || selectNode.having ||
+        !result->groups.grouping_sets.empty()) {
+		if (selectNode.aggregate_handling == AggregateHandling::NO_AGGREGATES_ALLOWED) {
 			throw BinderException("Aggregates cannot be present in a Project relation!");
-		} else if (statement.aggregate_handling == AggregateHandling::STANDARD_HANDLING) {
+		} else if (selectNode.aggregate_handling == AggregateHandling::STANDARD_HANDLING) {
 			if (select_binder.HasBoundColumns()) {
 				auto &bound_columns = select_binder.GetBoundColumns();
 				string error;
@@ -495,7 +495,7 @@ unique_ptr<BoundQueryNode> Binder::BindNode(SelectNode &statement) {
 
 	// QUALIFY clause requires at least one window function to be specified in at least one of the SELECT column list or
 	// the filter predicate of the QUALIFY clause
-	if (statement.qualify && result->windows.empty()) {
+	if (selectNode.qualify && result->windows.empty()) {
 		throw BinderException("at least one window function must appear in the SELECT column or QUALIFY clause");
 	}
 

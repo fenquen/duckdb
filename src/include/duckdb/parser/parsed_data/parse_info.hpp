@@ -12,9 +12,8 @@
 
 namespace duckdb {
 
-struct ParseInfo {
-	virtual ~ParseInfo() {
-	}
-};
+    struct ParseInfo {
+        virtual ~ParseInfo() = default;
+    };
 
 } // namespace duckdb

@@ -79,7 +79,7 @@ public:
 	~Catalog();
 
 	//! Reference to the database
-	DatabaseInstance &db;
+	DatabaseInstance &databaseInstance;
 	//! The catalog set holding the schemas
 	unique_ptr<CatalogSet> schemas;
 	//! The DependencyManager manages dependencies between different catalog objects

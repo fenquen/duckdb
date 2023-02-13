@@ -19,7 +19,7 @@ BoundStatement Binder::Bind(PrepareStatement &stmt) {
 	properties.allow_stream_result = false;
 	properties.bound_all_parameters = true;
 	properties.parameter_count = 0;
-	properties.return_type = StatementReturnType::NOTHING;
+	properties.statementReturnType = StatementReturnType::NOTHING;
 
 	BoundStatement result;
 	result.names = {"Success"};

@@ -12,10 +12,10 @@
 
 namespace duckdb {
 
-struct BoundStatement {
-	unique_ptr<LogicalOperator> plan;
-	vector<LogicalType> types;
-	vector<string> names;
-};
+    struct BoundStatement {
+        unique_ptr<LogicalOperator> plan;
+        vector<LogicalType> types;
+        vector<string> names;
+    };
 
 } // namespace duckdb

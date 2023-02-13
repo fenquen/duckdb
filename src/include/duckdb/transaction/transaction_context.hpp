@@ -27,18 +27,18 @@ namespace duckdb {
                            ClientContext &clientContext) : transactionManager(transactionManager),
                                                            clientContext(clientContext),
                                                            auto_commit(true),
-                                                           current_transaction(nullptr) {
+                                                           currentTransaction(nullptr) {
         }
 
         ~TransactionContext();
 
         Transaction &ActiveTransaction() {
-            D_ASSERT(current_transaction);
-            return *current_transaction;
+            D_ASSERT(currentTransaction);
+            return *currentTransaction;
         }
 
         bool HasActiveTransaction() {
-            return current_transaction != nullptr;
+            return currentTransaction != nullptr;
         }
 
         void RecordQuery(string query);
@@ -64,7 +64,7 @@ namespace duckdb {
 
         bool auto_commit;
 
-        Transaction *current_transaction;
+        Transaction *currentTransaction;
 
         TransactionContext(const TransactionContext &) = delete;
     };

@@ -19,13 +19,14 @@
 
 namespace duckdb {
 
-    Connection::Connection(DatabaseInstance &databaseInstance) : clientContext(
-            make_shared<ClientContext>(databaseInstance.shared_from_this())) {
+    Connection::Connection(DatabaseInstance &databaseInstance) : clientContext(make_shared<ClientContext>(databaseInstance.shared_from_this())) {
         ConnectionManager::Get(databaseInstance).AddConnection(*clientContext);
+
 #ifdef DEBUG
         EnableProfiling();
         clientContext->config.emit_profiler_output = false;
 #endif
+
     }
 
     Connection::Connection(DuckDB &database) : Connection(*database.databaseInstance) {
@@ -231,7 +232,7 @@ namespace duckdb {
     }
 
     void Connection::BeginTransaction() {
-        auto result = Query("BEGIN TRANSACTION");
+        auto result = Query("BEGIN TRANSACTION"); // 该sql对应了1个PGNode 是PGRawStmt 内部的话又有1个PGNode 是PGTransactionStmt
         if (result->HasError()) {
             result->ThrowError();
         }

@@ -203,7 +203,7 @@ BoundStatement Binder::Bind(ExportStatement &stmt) {
 
 	result.plan = move(export_node);
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::NOTHING;
+	properties.statementReturnType = StatementReturnType::NOTHING;
 	return result;
 }
 

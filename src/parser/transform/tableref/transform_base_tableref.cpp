@@ -3,20 +3,20 @@
 
 namespace duckdb {
 
-unique_ptr<TableRef> Transformer::TransformRangeVar(duckdb_libpgquery::PGRangeVar *root) {
+unique_ptr<TableRef> Transformer::TransformRangeVar(duckdb_libpgquery::PGRangeVar *pgRangeVar) {
 	auto result = make_unique<BaseTableRef>();
 
-	result->alias = TransformAlias(root->alias, result->column_name_alias);
-	if (root->relname) {
-		result->table_name = root->relname;
+	result->alias = TransformAlias(pgRangeVar->alias, result->column_name_alias);
+	if (pgRangeVar->relname) {
+		result->table_name = pgRangeVar->relname;
 	}
-	if (root->schemaname) {
-		result->schema_name = root->schemaname;
+	if (pgRangeVar->schemaname) {
+		result->schema_name = pgRangeVar->schemaname;
 	}
-	if (root->sample) {
-		result->sample = TransformSampleOptions(root->sample);
+	if (pgRangeVar->sample) {
+		result->sample = TransformSampleOptions(pgRangeVar->sample);
 	}
-	result->query_location = root->location;
+	result->query_location = pgRangeVar->location;
 	return move(result);
 }
 

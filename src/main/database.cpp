@@ -46,11 +46,9 @@ namespace duckdb {
         }
     }
 
-    DBConfig::~DBConfig() {
-    }
+    DBConfig::~DBConfig() = default;
 
-    DatabaseInstance::DatabaseInstance() {
-    }
+    DatabaseInstance::DatabaseInstance() = default;
 
     DatabaseInstance::~DatabaseInstance() {
         if (Exception::UncaughtException()) {
@@ -124,41 +122,43 @@ namespace duckdb {
         return ConnectionManager::Get(DatabaseInstance::GetDatabase(context));
     }
 
-    void DatabaseInstance::Initialize(const char *database_path, DBConfig *user_config) {
-        DBConfig default_config;
-        DBConfig *config_ptr = &default_config;
-        if (user_config) {
-            config_ptr = user_config;
+    void DatabaseInstance::Initialize(const char *databasePath, DBConfig *userDbConfig) {
+        DBConfig defaultDbConfig;
+
+        DBConfig *dbConfigPtr = &defaultDbConfig;
+
+        if (userDbConfig) {
+            dbConfigPtr = userDbConfig;
         }
 
-        if (config_ptr->dbConfigOptions.temporary_directory.empty() && database_path) {
+        if (dbConfigPtr->dbConfigOptions.temporary_directory.empty() && databasePath) {
             // no directory specified: use default temp path
-            config_ptr->dbConfigOptions.temporary_directory = string(database_path) + ".tmp";
+            dbConfigPtr->dbConfigOptions.temporary_directory = string(databasePath) + ".tmp";
 
             // special treatment for in-memory mode
-            if (strcmp(database_path, ":memory:") == 0) {
-                config_ptr->dbConfigOptions.temporary_directory = ".tmp";
+            if (strcmp(databasePath, ":memory:") == 0) {
+                dbConfigPtr->dbConfigOptions.temporary_directory = ".tmp";
             }
         }
 
-        if (database_path) {
-            config_ptr->dbConfigOptions.database_path = database_path;
+        if (databasePath) {
+            dbConfigPtr->dbConfigOptions.database_path = databasePath;
         } else {
-            config_ptr->dbConfigOptions.database_path.clear();
+            dbConfigPtr->dbConfigOptions.database_path.clear();
         }
 
-        for (auto &open: config_ptr->replacement_opens) {
+        for (auto &open: dbConfigPtr->replacement_opens) {
             if (open.pre_func) {
-                open.data = open.pre_func(*config_ptr, open.static_data.get());
+                open.data = open.pre_func(*dbConfigPtr, open.static_data.get());
                 if (open.data) {
                     break;
                 }
             }
         }
 
-        Configure(*config_ptr);
+        Configure(*dbConfigPtr);
 
-        if (user_config && !user_config->dbConfigOptions.use_temporary_directory) {
+        if (userDbConfig && !userDbConfig->dbConfigOptions.use_temporary_directory) {
             // temporary directories explicitly disabled
             dbConfig.dbConfigOptions.temporary_directory = string();
         }
@@ -191,8 +191,9 @@ namespace duckdb {
     }
 
     DuckDB::DuckDB(const char *path,
-                   DBConfig *new_config) : databaseInstance(make_shared<DatabaseInstance>()) {
-        databaseInstance->Initialize(path, new_config);
+                   DBConfig *dbConfig) : databaseInstance(make_shared<DatabaseInstance>()) {
+        databaseInstance->Initialize(path, dbConfig);
+
         if (databaseInstance->dbConfig.dbConfigOptions.load_extensions) {
             ExtensionHelper::LoadAllExtensions(*this);
         }
@@ -250,6 +251,7 @@ namespace duckdb {
 
     void DatabaseInstance::Configure(DBConfig &new_config) {
         dbConfig.dbConfigOptions = new_config.dbConfigOptions;
+
         if (dbConfig.dbConfigOptions.access_mode == AccessMode::UNDEFINED) {
             dbConfig.dbConfigOptions.access_mode = AccessMode::READ_WRITE;
         }
@@ -274,6 +276,7 @@ namespace duckdb {
             config.options.maximum_threads = 1;
 #endif
         }
+
         dbConfig.allocator = move(new_config.allocator);
         if (!dbConfig.allocator) {
             dbConfig.allocator = make_unique<Allocator>();

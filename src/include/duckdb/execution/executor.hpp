@@ -16,133 +16,153 @@
 #include "duckdb/parallel/pipeline.hpp"
 
 namespace duckdb {
-class ClientContext;
-class DataChunk;
-class PhysicalOperator;
-class PipelineExecutor;
-class OperatorState;
-class QueryProfiler;
-class ThreadContext;
-class Task;
+    class ClientContext;
 
-struct PipelineEventStack;
-struct ProducerToken;
-struct ScheduleEventData;
+    class DataChunk;
 
-class Executor {
-	friend class Pipeline;
-	friend class PipelineTask;
-	friend class PipelineBuildState;
+    class PhysicalOperator;
 
-public:
-	explicit Executor(ClientContext &context);
-	~Executor();
+    class PipelineExecutor;
 
-	ClientContext &context;
+    class OperatorState;
 
-public:
-	static Executor &Get(ClientContext &context);
+    class QueryProfiler;
 
-	void Initialize(PhysicalOperator *physical_plan);
-	void Initialize(unique_ptr<PhysicalOperator> physical_plan);
+    class ThreadContext;
 
-	void CancelTasks();
-	PendingExecutionResult ExecuteTask();
+    class Task;
 
-	void Reset();
+    struct PipelineEventStack;
+    struct ProducerToken;
+    struct ScheduleEventData;
 
-	vector<LogicalType> GetTypes();
+    class Executor {
+        friend class Pipeline;
 
-	unique_ptr<DataChunk> FetchChunk();
+        friend class PipelineTask;
 
-	//! Push a new error
-	void PushError(PreservedError exception);
+        friend class PipelineBuildState;
 
-	//! True if an error has been thrown
-	bool HasError();
-	//! Throw the exception that was pushed using PushError.
-	//! Should only be called if HasError returns true
-	void ThrowException();
+    public:
+        explicit Executor(ClientContext &context);
 
-	//! Work on tasks for this specific executor, until there are no tasks remaining
-	void WorkOnTasks();
+        ~Executor();
 
-	//! Flush a thread context into the client context
-	void Flush(ThreadContext &context);
+        ClientContext &context;
 
-	//! Returns the progress of the pipelines
-	bool GetPipelinesProgress(double &current_progress);
+    public:
+        static Executor &Get(ClientContext &context);
 
-	void CompletePipeline() {
-		completed_pipelines++;
-	}
-	ProducerToken &GetToken() {
-		return *producer;
-	}
-	void AddEvent(shared_ptr<Event> event);
+        void Initialize(PhysicalOperator *physicalPlan);
 
-	void AddRecursiveCTE(PhysicalOperator *rec_cte);
-	void ReschedulePipelines(const vector<shared_ptr<MetaPipeline>> &pipelines, vector<shared_ptr<Event>> &events);
+        void Initialize(unique_ptr<PhysicalOperator> physical_plan);
 
-	//! Whether or not the root of the pipeline is a result collector object
-	bool HasResultCollector();
-	//! Returns the query result - can only be used if `HasResultCollector` returns true
-	unique_ptr<QueryResult> GetResult();
+        void CancelTasks();
 
-private:
-	void InitializeInternal(PhysicalOperator *physical_plan);
+        PendingExecutionResult ExecuteTask();
 
-	void ScheduleEvents(const vector<shared_ptr<MetaPipeline>> &meta_pipelines);
-	static void ScheduleEventsInternal(ScheduleEventData &event_data);
+        void Reset();
 
-	static void VerifyScheduledEvents(const ScheduleEventData &event_data);
-	static void VerifyScheduledEventsInternal(const idx_t i, const vector<Event *> &vertices, vector<bool> &visited,
-	                                          vector<bool> &recursion_stack);
+        vector<LogicalType> GetTypes();
 
-	static void SchedulePipeline(const shared_ptr<MetaPipeline> &pipeline, ScheduleEventData &event_data);
+        unique_ptr<DataChunk> FetchChunk();
 
-	bool NextExecutor();
+        //! Push a new error
+        void PushError(PreservedError exception);
 
-	shared_ptr<Pipeline> CreateChildPipeline(Pipeline *current, PhysicalOperator *op);
+        //! True if an error has been thrown
+        bool HasError();
 
-	void VerifyPipeline(Pipeline &pipeline);
-	void VerifyPipelines();
+        //! Throw the exception that was pushed using PushError.
+        //! Should only be called if HasError returns true
+        void ThrowException();
 
-private:
-	PhysicalOperator *physical_plan;
-	unique_ptr<PhysicalOperator> owned_plan;
+        //! Work on tasks for this specific executor, until there are no tasks remaining
+        void WorkOnTasks();
 
-	mutex executor_lock;
-	mutex error_lock;
-	//! All pipelines of the query plan
-	vector<shared_ptr<Pipeline>> pipelines;
-	//! The root pipelines of the query
-	vector<shared_ptr<Pipeline>> root_pipelines;
-	//! The recursive CTE's in this query plan
-	vector<PhysicalOperator *> recursive_ctes;
-	//! The pipeline executor for the root pipeline
-	unique_ptr<PipelineExecutor> root_executor;
-	//! The current root pipeline index
-	idx_t root_pipeline_idx;
-	//! The producer of this query
-	unique_ptr<ProducerToken> producer;
-	//! Exceptions that occurred during the execution of the current query
-	vector<PreservedError> exceptions;
-	//! List of events
-	vector<shared_ptr<Event>> events;
-	//! The query profiler
-	shared_ptr<QueryProfiler> profiler;
+        //! Flush a thread context into the client context
+        void Flush(ThreadContext &context);
 
-	//! The amount of completed pipelines of the query
-	atomic<idx_t> completed_pipelines;
-	//! The total amount of pipelines in the query
-	idx_t total_pipelines;
-	//! Whether or not execution is cancelled
-	bool cancelled;
+        //! Returns the progress of the pipelines
+        bool GetPipelinesProgress(double &current_progress);
 
-	//! The last pending execution result (if any)
-	PendingExecutionResult execution_result;
-	//! The current task in process (if any)
-	unique_ptr<Task> task;
-};
+        void CompletePipeline() {
+            completed_pipelines++;
+        }
+
+        ProducerToken &GetToken() {
+            return *producer;
+        }
+
+        void AddEvent(shared_ptr<Event> event);
+
+        void AddRecursiveCTE(PhysicalOperator *rec_cte);
+
+        void ReschedulePipelines(const vector<shared_ptr<MetaPipeline>> &pipelines, vector<shared_ptr<Event>> &events);
+
+        //! Whether or not the root of the pipeline is a result collector object
+        bool HasResultCollector();
+
+        //! Returns the query result - can only be used if `HasResultCollector` returns true
+        unique_ptr<QueryResult> GetResult();
+
+    private:
+        void InitializeInternal(PhysicalOperator *physicalPlan);
+
+        void ScheduleEvents(const vector<shared_ptr<MetaPipeline>> &meta_pipelines);
+
+        static void ScheduleEventsInternal(ScheduleEventData &event_data);
+
+        static void VerifyScheduledEvents(const ScheduleEventData &event_data);
+
+        static void VerifyScheduledEventsInternal(const idx_t i, const vector<Event *> &vertices, vector<bool> &visited,
+                                                  vector<bool> &recursion_stack);
+
+        static void SchedulePipeline(const shared_ptr<MetaPipeline> &pipeline, ScheduleEventData &event_data);
+
+        bool NextExecutor();
+
+        shared_ptr<Pipeline> CreateChildPipeline(Pipeline *current, PhysicalOperator *op);
+
+        void VerifyPipeline(Pipeline &pipeline);
+
+        void VerifyPipelines();
+
+    private:
+        PhysicalOperator *physical_plan;
+        unique_ptr<PhysicalOperator> owned_plan;
+
+        mutex executor_lock;
+        mutex error_lock;
+        //! All pipelines of the query plan
+        vector<shared_ptr<Pipeline>> pipelines;
+        //! The root pipelines of the query
+        vector<shared_ptr<Pipeline>> root_pipelines;
+        //! The recursive CTE's in this query plan
+        vector<PhysicalOperator *> recursive_ctes;
+        //! The pipeline executor for the root pipeline
+        unique_ptr<PipelineExecutor> root_executor;
+        //! The current root pipeline index
+        idx_t root_pipeline_idx;
+        //! The producer of this query
+        unique_ptr<ProducerToken> producer;
+        //! Exceptions that occurred during the execution of the current query
+        vector<PreservedError> exceptions;
+        //! List of events
+        vector<shared_ptr<Event>> events;
+        //! The query profiler
+        shared_ptr<QueryProfiler> profiler;
+
+        //! The amount of completed pipelines of the query
+        atomic<idx_t> completed_pipelines;
+        //! The total amount of pipelines in the query
+        idx_t total_pipelines;
+        //! Whether or not execution is cancelled
+        bool cancelled;
+
+        //! The last pending execution result (if any)
+        PendingExecutionResult execution_result;
+        //! The current task in process (if any)
+        unique_ptr<Task> task;
+    };
 } // namespace duckdb

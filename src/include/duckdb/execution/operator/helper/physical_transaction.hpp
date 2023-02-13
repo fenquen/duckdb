@@ -13,19 +13,23 @@
 
 namespace duckdb {
 
-//! PhysicalTransaction represents a transaction operator (e.g. BEGIN or COMMIT)
-class PhysicalTransaction : public PhysicalOperator {
-public:
-	explicit PhysicalTransaction(unique_ptr<TransactionInfo> info, idx_t estimated_cardinality)
-	    : PhysicalOperator(PhysicalOperatorType::TRANSACTION, {LogicalType::BOOLEAN}, estimated_cardinality),
-	      info(move(info)) {
-	}
+    //! PhysicalTransaction represents a transaction operator (e.g. BEGIN or COMMIT)
+    class PhysicalTransaction : public PhysicalOperator {
+    public:
+        explicit PhysicalTransaction(unique_ptr<TransactionInfo> info,
+                                     idx_t estimated_cardinality) : PhysicalOperator(PhysicalOperatorType::TRANSACTION,
+                                                                                     {LogicalType::BOOLEAN},
+                                                                                     estimated_cardinality),
+                                                                    info(move(info)) {
+        }
 
-	unique_ptr<TransactionInfo> info;
+        unique_ptr<TransactionInfo> info;
 
-public:
-	void GetData(ExecutionContext &context, DataChunk &chunk, GlobalSourceState &gstate,
-	             LocalSourceState &lstate) const override;
-};
+    public:
+        void GetData(ExecutionContext &context,
+                     DataChunk &chunk,
+                     GlobalSourceState &gstate,
+                     LocalSourceState &lstate) const override;
+    };
 
 } // namespace duckdb

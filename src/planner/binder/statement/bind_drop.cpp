@@ -46,7 +46,7 @@ BoundStatement Binder::Bind(DropStatement &stmt) {
 	result.names = {"Success"};
 	result.types = {LogicalType::BOOLEAN};
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::NOTHING;
+	properties.statementReturnType = StatementReturnType::NOTHING;
 	return result;
 }
 

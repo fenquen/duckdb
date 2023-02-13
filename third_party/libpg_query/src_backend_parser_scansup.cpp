@@ -56,55 +56,55 @@ namespace duckdb_libpgquery {
  * support that.  If you want to implement it, you'll need to fix
  * SplitIdentifierString() in utils/adt/varlena.c.
  */
-char *downcase_truncate_identifier(const char *ident, int len, bool warn) {
-	return downcase_identifier(ident, len, warn, true);
-}
+    char *downcase_truncate_identifier(const char *ident, int len, bool warn) {
+        return downcase_identifier(ident, len, warn, true);
+    }
 
-static __thread bool pg_preserve_identifier_case = false;
+    static __thread bool pg_preserve_identifier_case = false;
 
-void set_preserve_identifier_case(bool preserve) {
-	pg_preserve_identifier_case = preserve;
-}
+    void set_preserve_identifier_case(bool preserve) {
+        pg_preserve_identifier_case = preserve;
+    }
 
-bool get_preserve_identifier_case() {
-	return pg_preserve_identifier_case;
-}
+    bool get_preserve_identifier_case() {
+        return pg_preserve_identifier_case;
+    }
 
 /*
  * a workhorse for downcase_truncate_identifier
  */
-char *downcase_identifier(const char *ident, int len, bool warn, bool truncate) {
-	char *result;
-	int i;
-	bool enc_is_single_byte;
+    char *downcase_identifier(const char *ident, int len, bool warn, bool truncate) {
+        char *result;
+        int i;
+        bool enc_is_single_byte;
 
-	result = (char *)palloc(len + 1);
-	enc_is_single_byte = pg_database_encoding_max_length() == 1;
+        result = (char *) palloc(len + 1);
+        enc_is_single_byte = pg_database_encoding_max_length() == 1;
 
-	/*
-	 * SQL99 specifies Unicode-aware case normalization, which we don't yet
-	 * have the infrastructure for.  Instead we use tolower() to provide a
-	 * locale-aware translation.  However, there are some locales where this
-	 * is not right either (eg, Turkish may do strange things with 'i' and
-	 * 'I').  Our current compromise is to use tolower() for characters with
-	 * the high bit set, as long as they aren't part of a multi-byte
-	 * character, and use an ASCII-only downcasing for 7-bit characters.
-	 */
-	for (i = 0; i < len; i++) {
-		unsigned char ch = (unsigned char)ident[i];
+        /*
+         * SQL99 specifies Unicode-aware case normalization, which we don't yet
+         * have the infrastructure for.  Instead we use tolower() to provide a
+         * locale-aware translation.  However, there are some locales where this
+         * is not right either (eg, Turkish may do strange things with 'i' and
+         * 'I').  Our current compromise is to use tolower() for characters with
+         * the high bit set, as long as they aren't part of a multi-byte
+         * character, and use an ASCII-only downcasing for 7-bit characters.
+         */
+        for (i = 0; i < len; i++) {
+            unsigned char ch = (unsigned char) ident[i];
 
-		if (!get_preserve_identifier_case()) {
-			if (ch >= 'A' && ch <= 'Z')
-				ch += 'a' - 'A';
-			else if (enc_is_single_byte && IS_HIGHBIT_SET(ch) && isupper(ch))
-				ch = tolower(ch);
-		}
-		result[i] = (char)ch;
-	}
-	result[i] = '\0';
+            if (!get_preserve_identifier_case()) {
+                if (ch >= 'A' && ch <= 'Z')
+                    ch += 'a' - 'A';
+                else if (enc_is_single_byte && IS_HIGHBIT_SET(ch) && isupper(ch))
+                    ch = tolower(ch);
+            }
+            result[i] = (char) ch;
+        }
+        result[i] = '\0';
 
-	return result;
-}
+        return result;
+    }
 
 /*
  * scanner_isspace() --- return true if flex scanner considers char whitespace
@@ -115,10 +115,10 @@ char *downcase_identifier(const char *ident, int len, bool warn, bool truncate) 
  * In principle we might need similar functions for isalnum etc, but for the
  * moment only isspace seems needed.
  */
-bool scanner_isspace(char ch) {
-	/* This must match scan.l's list of {space} characters */
-	if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f')
-		return true;
-	return false;
-}
+    bool scanner_isspace(char ch) {
+        /* This must match scan.l's list of {space} characters */
+        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f')
+            return true;
+        return false;
+    }
 }

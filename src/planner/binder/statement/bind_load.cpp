@@ -12,7 +12,7 @@ BoundStatement Binder::Bind(LoadStatement &stmt) {
 
 	result.plan = make_unique<LogicalSimple>(LogicalOperatorType::LOGICAL_LOAD, move(stmt.info));
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::NOTHING;
+	properties.statementReturnType = StatementReturnType::NOTHING;
 	return result;
 }
 

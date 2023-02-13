@@ -14,89 +14,110 @@
 #include "duckdb/main/valid_checker.hpp"
 
 namespace duckdb {
-class StorageManager;
-class Catalog;
-class TransactionManager;
-class ConnectionManager;
-class FileSystem;
-class TaskScheduler;
-class ObjectCache;
+    class StorageManager;
 
-class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
-	friend class DuckDB;
+    class Catalog;
 
-public:
-	DUCKDB_API DatabaseInstance();
-	DUCKDB_API ~DatabaseInstance();
+    class TransactionManager;
 
-	DBConfig dbConfig;
+    class ConnectionManager;
 
-public:
-	DUCKDB_API StorageManager &GetStorageManager();
-	DUCKDB_API Catalog &GetCatalog();
-	DUCKDB_API FileSystem &GetFileSystem();
-	DUCKDB_API TransactionManager &GetTransactionManager();
-	DUCKDB_API TaskScheduler &GetScheduler();
-	DUCKDB_API ObjectCache &GetObjectCache();
-	DUCKDB_API ConnectionManager &GetConnectionManager();
-	DUCKDB_API ValidChecker &GetValidChecker();
-	DUCKDB_API void SetExtensionLoaded(const std::string &extension_name);
+    class FileSystem;
 
-	idx_t NumberOfThreads();
+    class TaskScheduler;
 
-	DUCKDB_API static DatabaseInstance &GetDatabase(ClientContext &context);
+    class ObjectCache;
 
-	DUCKDB_API const unordered_set<std::string> &LoadedExtensions();
+    class DatabaseInstance : public std::enable_shared_from_this<DatabaseInstance> {
+        friend class DuckDB;
 
-	DUCKDB_API bool TryGetCurrentSetting(const std::string &key, Value &result);
+    public:
+        DUCKDB_API DatabaseInstance();
 
-private:
-	void Initialize(const char *path, DBConfig *config);
+        DUCKDB_API ~DatabaseInstance();
 
-	void Configure(DBConfig &config);
+        DBConfig dbConfig;
 
-private:
-	unique_ptr<StorageManager> storageManager;
-	unique_ptr<Catalog> catalog;
-	unique_ptr<TransactionManager> transaction_manager;
-	unique_ptr<TaskScheduler> scheduler;
-	unique_ptr<ObjectCache> object_cache;
-	unique_ptr<ConnectionManager> connection_manager;
-	unordered_set<std::string> loaded_extensions;
-	ValidChecker db_validity;
-};
+    public:
+        DUCKDB_API StorageManager &GetStorageManager();
+
+        DUCKDB_API Catalog &GetCatalog();
+
+        DUCKDB_API FileSystem &GetFileSystem();
+
+        DUCKDB_API TransactionManager &GetTransactionManager();
+
+        DUCKDB_API TaskScheduler &GetScheduler();
+
+        DUCKDB_API ObjectCache &GetObjectCache();
+
+        DUCKDB_API ConnectionManager &GetConnectionManager();
+
+        DUCKDB_API ValidChecker &GetValidChecker();
+
+        DUCKDB_API void SetExtensionLoaded(const std::string &extension_name);
+
+        idx_t NumberOfThreads();
+
+        DUCKDB_API static DatabaseInstance &GetDatabase(ClientContext &context);
+
+        DUCKDB_API const unordered_set<std::string> &LoadedExtensions();
+
+        DUCKDB_API bool TryGetCurrentSetting(const std::string &key, Value &result);
+
+    private:
+        void Initialize(const char *databasePath, DBConfig *userDbConfig);
+
+        void Configure(DBConfig &config);
+
+    private:
+        unique_ptr<StorageManager> storageManager;
+        unique_ptr<Catalog> catalog;
+        unique_ptr<TransactionManager> transaction_manager;
+        unique_ptr<TaskScheduler> scheduler;
+        unique_ptr<ObjectCache> object_cache;
+        unique_ptr<ConnectionManager> connection_manager;
+        unordered_set<std::string> loaded_extensions;
+        ValidChecker db_validity;
+    };
 
 //! The database object. This object holds the catalog and all the
 //! database-specific meta information.
-class DuckDB {
-public:
-	DUCKDB_API explicit DuckDB(const char *path = nullptr, DBConfig *config = nullptr);
-	DUCKDB_API explicit DuckDB(const string &path, DBConfig *config = nullptr);
-	DUCKDB_API explicit DuckDB(DatabaseInstance &instance);
+    class DuckDB {
+    public:
+        DUCKDB_API explicit DuckDB(const char *path = nullptr, DBConfig *dbConfig = nullptr);
 
-	DUCKDB_API ~DuckDB();
+        DUCKDB_API explicit DuckDB(const string &path, DBConfig *config = nullptr);
 
-	//! Reference to the actual database instance
-	shared_ptr<DatabaseInstance> databaseInstance;
+        DUCKDB_API explicit DuckDB(DatabaseInstance &instance);
 
-public:
-	template <class T>
-	void LoadExtension() {
-		T extension;
-		if (ExtensionIsLoaded(extension.Name())) {
-			return;
-		}
-		extension.Load(*this);
-		databaseInstance->SetExtensionLoaded(extension.Name());
-	}
+        DUCKDB_API ~DuckDB();
 
-	DUCKDB_API FileSystem &GetFileSystem();
+        //! Reference to the actual database instance
+        shared_ptr<DatabaseInstance> databaseInstance;
 
-	DUCKDB_API idx_t NumberOfThreads();
-	DUCKDB_API static const char *SourceID();
-	DUCKDB_API static const char *LibraryVersion();
-	DUCKDB_API static string Platform();
-	DUCKDB_API bool ExtensionIsLoaded(const std::string &name);
-};
+    public:
+        template<class T>
+        void LoadExtension() {
+            T extension;
+            if (ExtensionIsLoaded(extension.Name())) {
+                return;
+            }
+            extension.Load(*this);
+            databaseInstance->SetExtensionLoaded(extension.Name());
+        }
+
+        DUCKDB_API FileSystem &GetFileSystem();
+
+        DUCKDB_API idx_t NumberOfThreads();
+
+        DUCKDB_API static const char *SourceID();
+
+        DUCKDB_API static const char *LibraryVersion();
+
+        DUCKDB_API static string Platform();
+
+        DUCKDB_API bool ExtensionIsLoaded(const std::string &name);
+    };
 
 } // namespace duckdb

@@ -6,7 +6,7 @@ namespace duckdb {
 
 unique_ptr<SelectStatement> Transformer::TransformSelect(duckdb_libpgquery::PGNode *node, bool is_select) {
 	auto stmt = reinterpret_cast<duckdb_libpgquery::PGSelectStmt *>(node);
-	auto result = make_unique<SelectStatement>();
+	auto selectStatement = make_unique<SelectStatement>();
 
 	// Both Insert/Create Table As uses this.
 	if (is_select) {
@@ -18,8 +18,8 @@ unique_ptr<SelectStatement> Transformer::TransformSelect(duckdb_libpgquery::PGNo
 		}
 	}
 
-	result->node = TransformSelectNode(stmt);
-	return result;
+    selectStatement->node = TransformSelectNode(stmt);
+	return selectStatement;
 }
 
 } // namespace duckdb

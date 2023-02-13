@@ -23,8 +23,7 @@ namespace duckdb {
                                                      read_only(read_only) {
     }
 
-    StorageManager::~StorageManager() {
-    }
+    StorageManager::~StorageManager() = default;
 
     StorageManager &StorageManager::GetStorageManager(ClientContext &context) {
         return StorageManager::GetStorageManager(*context.databaseInstance);
@@ -55,6 +54,7 @@ namespace duckdb {
 
     void StorageManager::Initialize() {
         bool in_memory = InMemory();
+
         if (in_memory && read_only) {
             throw CatalogException("Cannot launch in-memory database in read-only mode!");
         }

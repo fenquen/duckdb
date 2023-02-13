@@ -60,8 +60,8 @@ public:
 	bool HasFinishEvent(Pipeline *pipeline);
 
 public:
-	//! Build the MetaPipeline with 'op' as the first operator (excl. the shared sink)
-	void Build(PhysicalOperator *op);
+	//! Build the MetaPipeline with 'physicalPlan' as the first operator (excl. the shared sink)
+	void Build(PhysicalOperator *physicalPlan);
 	//! Ready all the pipelines (recursively)
 	void Ready();
 

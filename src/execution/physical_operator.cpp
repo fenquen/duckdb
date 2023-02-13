@@ -127,14 +127,14 @@ idx_t PhysicalOperator::GetMaxThreadMemory(ClientContext &context) {
 void PhysicalOperator::BuildPipelines(Pipeline &current, MetaPipeline &meta_pipeline) {
 	op_state.reset();
 
-	auto &state = meta_pipeline.GetState();
+	auto &pipelineBuildState = meta_pipeline.GetState();
 	if (IsSink()) {
 		// operator is a sink, build a pipeline
 		sink_state.reset();
 		D_ASSERT(children.size() == 1);
 
 		// single operator: the operator becomes the data source of the current pipeline
-		state.SetPipelineSource(current, this);
+		pipelineBuildState.SetPipelineSource(current, this);
 
 		// we create a new pipeline starting from the child
 		auto child_meta_pipeline = meta_pipeline.CreateChildMetaPipeline(current, this);
@@ -143,12 +143,12 @@ void PhysicalOperator::BuildPipelines(Pipeline &current, MetaPipeline &meta_pipe
 		// operator is not a sink! recurse in children
 		if (children.empty()) {
 			// source
-			state.SetPipelineSource(current, this);
+			pipelineBuildState.SetPipelineSource(current, this);
 		} else {
 			if (children.size() != 1) {
 				throw InternalException("Operator not supported in BuildPipelines");
 			}
-			state.AddPipelineOperator(current, this);
+			pipelineBuildState.AddPipelineOperator(current, this);
 			children[0]->BuildPipelines(current, meta_pipeline);
 		}
 	}

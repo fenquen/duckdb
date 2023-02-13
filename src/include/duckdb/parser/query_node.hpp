@@ -40,8 +40,8 @@ class QueryNode {
 public:
 	explicit QueryNode(QueryNodeType type) : type(type) {
 	}
-	virtual ~QueryNode() {
-	}
+
+	virtual ~QueryNode() = default;
 
 	//! The type of the query node, either SetOperation or Select
 	QueryNodeType type;

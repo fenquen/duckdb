@@ -7,7 +7,7 @@
 namespace duckdb {
 
 TransactionContext::~TransactionContext() {
-	if (current_transaction) {
+	if (currentTransaction) {
 		try {
 			Rollback();
 		} catch (...) {
@@ -16,19 +16,20 @@ TransactionContext::~TransactionContext() {
 }
 
 void TransactionContext::BeginTransaction() {
-	if (current_transaction) {
+	if (currentTransaction) {
 		throw TransactionException("cannot start a transaction within a transaction");
 	}
-	current_transaction = transactionManager.StartTransaction(clientContext);
+
+    currentTransaction = transactionManager.StartTransaction(clientContext);
 }
 
 void TransactionContext::Commit() {
-	if (!current_transaction) {
+	if (!currentTransaction) {
 		throw TransactionException("failed to commit: no transaction active");
 	}
-	auto transaction = current_transaction;
+	auto transaction = currentTransaction;
 	SetAutoCommit(true);
-	current_transaction = nullptr;
+    currentTransaction = nullptr;
 	string error = transactionManager.CommitTransaction(clientContext, transaction);
 	if (!error.empty()) {
 		throw TransactionException("Failed to commit: %s", error);
@@ -37,23 +38,23 @@ void TransactionContext::Commit() {
 
 void TransactionContext::SetAutoCommit(bool value) {
 	auto_commit = value;
-	if (!auto_commit && !current_transaction) {
+	if (!auto_commit && !currentTransaction) {
 		BeginTransaction();
 	}
 }
 
 void TransactionContext::Rollback() {
-	if (!current_transaction) {
+	if (!currentTransaction) {
 		throw TransactionException("failed to rollback: no transaction active");
 	}
-	auto transaction = current_transaction;
+	auto transaction = currentTransaction;
 	ClearTransaction();
 	transactionManager.RollbackTransaction(transaction);
 }
 
 void TransactionContext::ClearTransaction() {
 	SetAutoCommit(true);
-	current_transaction = nullptr;
+    currentTransaction = nullptr;
 }
 
 } // namespace duckdb

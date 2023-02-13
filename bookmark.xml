@@ -1,0 +1,1555 @@
+<project version="4">
+  <component name="BookmarksManager">
+    <option name="groups">
+      <GroupState>
+        <option name="bookmarks">
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/examples/embedded-c++/main.cpp" />
+              <entry key="line" value="6" />
+            </attributes>
+            <option name="description" value="DuckDB duckDb(&quot;/Users/a/github/duckdb/data.db&quot;);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/database.cpp" />
+              <entry key="line" value="194" />
+            </attributes>
+            <option name="description" value="-databaseInstance-&gt;Initialize(path, dbConfig);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/database.cpp" />
+              <entry key="line" value="158" />
+            </attributes>
+            <option name="description" value="--Configure(*dbConfigPtr);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/database.cpp" />
+              <entry key="line" value="179" />
+            </attributes>
+            <option name="description" value="--storageManager-&gt;Initialize();" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/storage/storage_manager.cpp" />
+              <entry key="line" value="61" />
+            </attributes>
+            <option name="description" value="---CreateBufferManager();" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/storage/storage_manager.cpp" />
+              <entry key="line" value="67" />
+            </attributes>
+            <option name="description" value="---Connection connection(databaseInstance);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/storage/storage_manager.cpp" />
+              <entry key="line" value="68" />
+            </attributes>
+            <option name="description" value="---connection.BeginTransaction();" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/connection.cpp" />
+              <entry key="line" value="234" />
+            </attributes>
+            <option name="description" value="----auto result = Query(&quot;BEGIN TRANSACTION&quot;);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/connection.cpp" />
+              <entry key="line" value="76" />
+            </attributes>
+            <option name="description" value="-----auto result = clientContext-&gt;Query(querySql, false);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="853" />
+            </attributes>
+            <option name="description" value="------ParseStatements()" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="912" />
+            </attributes>
+            <option name="description" value="-------result = ParseStatementsInternal(clientContextLock, querySql);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="493" />
+            </attributes>
+            <option name="description" value="--------parser.ParseQuery(querySql);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/parser/parser.cpp" />
+              <entry key="line" value="28" />
+            </attributes>
+            <option name="description" value="---------postgresParser.Parse(querySql);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/parser/parser.cpp" />
+              <entry key="line" value="63" />
+            </attributes>
+            <option name="description" value="----------transformer.TransformParseTree(postgresParser.parse_tree, statements);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/parser/transformer.cpp" />
+              <entry key="line" value="37" />
+            </attributes>
+            <option name="description" value="-----------sqlStatement = TransformStatement(entry-&gt;data.ptr_value);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/parser/transformer.cpp" />
+              <entry key="line" value="100" />
+            </attributes>
+            <option name="description" value="TransformTransaction(stmt);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="880" />
+            </attributes>
+            <option name="description" value="------pendingQueryResult = PendingQueryInternal(sqlStatement)" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="956" />
+            </attributes>
+            <option name="description" value="-------PendingStmtOrPreparedStmtInternal()" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="729" />
+            </attributes>
+            <option name="description" value="--------PendingStmtOrPreparedStmt(statement)" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="744" />
+            </attributes>
+            <option name="description" value="---------BeginQueryInternal(clientContextLock, querySql);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="156" />
+            </attributes>
+            <option name="description" value="----------BeginTransactionInternal(clientContextLock, false);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="151" />
+            </attributes>
+            <option name="description" value="-----------transactionContext.BeginTransaction();" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/transaction/transaction_context.cpp" />
+              <entry key="line" value="22" />
+            </attributes>
+            <option name="description" value="------------currentTransaction = transactionManager.StartTransaction(clientContext);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="765" />
+            </attributes>
+            <option name="description" value="---------pendingQueryResult = PendingStatementInternal(clientContextLock," />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="630" />
+            </attributes>
+            <option name="description" value="----------CreatePreparedStatement()" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="343" />
+            </attributes>
+            <option name="description" value="-----------planner.CreatePlan(sqlStatement);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/planner/planner.cpp" />
+              <entry key="line" value="141" />
+            </attributes>
+            <option name="description" value="------------CreatePlan(*sqlStatement);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/planner/planner.cpp" />
+              <entry key="line" value="42" />
+            </attributes>
+            <option name="description" value="-------------boundStatement = binder-&gt;Bind(sqlStatement);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/planner/binder.cpp" />
+              <entry key="line" value="64" />
+            </attributes>
+            <option name="description" value="--------------Bind(sqlStatement);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/planner/binder/statement/bind_simple.cpp" />
+              <entry key="line" value="36" />
+            </attributes>
+            <option name="description" value="---------------boundStatement.plan = make_unique&lt;LogicalSimple&gt;()" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/planner/planner.cpp" />
+              <entry key="line" value="49" />
+            </attributes>
+            <option name="description" value="-------------plan = std::move(boundStatement.plan);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="349" />
+            </attributes>
+            <option name="description" value="-----------logicalPlan = std::move(planner.plan);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="380" />
+            </attributes>
+            <option name="description" value="-----------physicalPlan = physicalPlanGenerator.CreatePlan(std::move(logicalPlan));" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/execution/physical_plan_generator.cpp" />
+              <entry key="line" value="57" />
+            </attributes>
+            <option name="description" value="------------physicalPlan = CreatePlan(*logicalPlan);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/execution/physical_plan_generator.cpp" />
+              <entry key="line" value="182" />
+            </attributes>
+            <option name="description" value="-------------physicalPlan = CreatePlan((LogicalSimple &amp;) logicalPlan);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/execution/physical_plan/plan_simple.cpp" />
+              <entry key="line" value="22" />
+            </attributes>
+            <option name="description" value="--------------make_unique&lt;PhysicalTransaction&gt;()" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="387" />
+            </attributes>
+            <option name="description" value="-----------preparedStatementData-&gt;plan = std::move(physicalPlan);" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="647" />
+            </attributes>
+            <option name="description" value="----------PendingPreparedStatement(preparedtStatementData)" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+          <BookmarkState>
+            <attributes>
+              <entry key="url" value="file://$PROJECT_DIR$/src/main/client_context.cpp" />
+              <entry key="line" value="435" />
+            </attributes>
+            <option name="description" value="-----------executor.Initialize(statement.plan.get());" />
+            <option name="provider" value="com.intellij.ide.bookmark.providers.LineBookmarkProvider" />
+          </BookmarkState>
+        </option>
+        <option name="name" value="生成database对象" />
+      </GroupState>
+    </option>
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="-1">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1054">
+              <caret line="62" column="22" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/embedded-c++/main.cpp">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/embedded-c++/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/storage/storage_manager.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1156">
+              <caret line="68" selection-start-line="68" selection-end-line="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/parser.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1071">
+              <caret line="63" column="42" selection-start-line="63" selection-start-column="42" selection-end-line="63" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transformer.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="31" column="83" selection-start-line="31" selection-start-column="83" selection-end-line="31" selection-end-column="83" />
+              <folding>
+                <element signature="e#0#40#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/pg_list.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="833">
+              <caret line="49" column="6" selection-start-line="49" selection-start-column="6" selection-end-line="49" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/statement/transform_select.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/statement/transform_select_node.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1054">
+              <caret line="62" column="47" selection-start-line="62" selection-start-column="47" selection-end-line="62" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/tableref/transform_from.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/tableref/transform_tableref.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/tableref/transform_base_tableref.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/planner.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="714">
+              <caret line="42" column="44" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_statement.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3077">
+              <caret line="181" column="27" selection-start-line="181" selection-start-column="27" selection-end-line="181" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/tableref/plan_basetableref.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/query_node/plan_select_node.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/tableref/bind_basetableref.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2159">
+              <caret line="127" column="51" selection-start-line="127" selection-start-column="51" selection-end-line="127" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/operator/logical_get.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="578">
+              <caret line="34" column="14" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/logical_operator.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="714">
+              <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/logical_operator_type.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/execution/physical_operator.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2941">
+              <caret line="173" column="40" selection-start-line="173" selection-start-column="40" selection-end-line="173" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/execution/operator/scan/physical_table_scan.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/execution/operator/scan/physical_table_scan.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1428">
+              <caret line="84" column="15" selection-start-line="84" selection-start-column="15" selection-end-line="84" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/function/table_function.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2907">
+              <caret line="171" column="29" selection-start-line="171" selection-start-column="29" selection-end-line="171" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/function/table_function.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/types/data_chunk.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="714">
+              <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/operator/logical_get.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="75" selection-start-line="16" selection-start-column="75" selection-end-line="16" selection-end-column="75" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/tableref/bound_basetableref.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_tableref.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/helper.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="782">
+              <caret line="46" column="14" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/catalog/catalog.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1275">
+              <caret line="75" column="15" selection-start-line="75" selection-start-column="15" selection-end-line="75" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/catalog_type.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/catalog/catalog.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/database.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3672">
+              <caret line="216" column="19" selection-start-line="216" selection-start-column="19" selection-end-line="216" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/main/database.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1258">
+              <caret line="74" column="23" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/catalog/catalog_entry/schema_catalog_entry.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="714">
+              <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/query_node/bind_select_node.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5593">
+              <caret line="329" column="41" selection-start-line="329" selection-start-column="41" selection-end-line="329" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/query_node/bound_select_node.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_query_node.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/statement/bind_select.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/statement_type.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/planner/binder/statement/bind_simple.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="37" column="85" selection-start-line="37" selection-start-column="85" selection-end-line="37" selection-end-column="85" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/parser/transform/helpers/transform_sample.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/exception.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3434">
+              <caret line="202" column="47" selection-start-line="202" selection-start-column="47" selection-end-line="202" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/winapi.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/common/exception.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4726">
+              <caret line="278" column="25" selection-start-line="278" selection-start-column="25" selection-end-line="278" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/include/c++/9/bits/exception.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1020">
+              <caret line="60" column="3" selection-start-line="60" selection-start-column="3" selection-end-line="60" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/third_party/catch/catch.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="66827">
+              <caret line="3931" column="16" selection-start-line="3931" selection-start-column="16" selection-end-line="3931" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/common/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/primnodes.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1258">
+              <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="74" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/transformer.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1411">
+              <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/statement/select_statement.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+              <folding>
+                <element signature="e#268#310#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/query_node.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/query_node/select_node.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/tableref.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="29" column="30" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/tableref/basetableref.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/sql_statement.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/nodes.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2448">
+              <caret line="144" column="4" selection-start-line="144" selection-start-column="4" selection-end-line="144" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/parsenodes.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="18853">
+              <caret line="1109" column="16" selection-start-line="1109" selection-start-column="16" selection-end-line="1109" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTypeUsageLocalSummary">
+    <fileType name="CMakeLists.txt">
+      <summary usageCount="33" lastUsed="1676248955454" />
+    </fileType>
+    <fileType name="Makefile">
+      <summary usageCount="1" lastUsed="1672883359313" />
+    </fileType>
+    <fileType name="Markdown">
+      <summary usageCount="2" lastUsed="1672975411019" />
+    </fileType>
+    <fileType name="ObjectiveC">
+      <summary usageCount="284" lastUsed="1676248955545" />
+    </fileType>
+    <fileType name="PLAIN_TEXT">
+      <summary usageCount="9" lastUsed="1672984908645" />
+    </fileType>
+    <fileType name="disassembly">
+      <summary usageCount="1" lastUsed="1672897318669" />
+    </fileType>
+    <fileType name="textmate">
+      <summary usageCount="3" lastUsed="1672975528471" />
+    </fileType>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>CMAKE_CXX_STANDARD</find>
+      <find>INSTALL_LIB_DIR</find>
+      <find>duckdb</find>
+      <find>DUCKDB_EXPORT_SET</find>
+      <find>include</find>
+      <find>ALL_OBJECT_FILES</find>
+      <find>duckdb_pg_query</find>
+      <find>DUCKDB_LINK_LIBS</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/third_party/libpg_query</dir>
+      <dir>$PROJECT_DIR$/src</dir>
+    </dirStrings>
+  </component>
+  <component name="GitSEFilterConfiguration">{
+}</component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/src/transaction/transaction_manager.cpp" />
+      <option value="$PROJECT_DIR$/src/transaction/transaction.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/main/client_context.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/planner/planner.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/parser/query_error_context.hpp" />
+      <option value="$PROJECT_DIR$/src/parser/statement/transaction_statement.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/planner.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/common/enums/statement_type.hpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/statement/bind_simple.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/parser/statement/transaction_statement.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/common/enums/logical_operator_type.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/parser/parsed_data/transaction_info.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/function/function_serialization.hpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/tableref/bind_expressionlistref.cpp" />
+      <option value="$PROJECT_DIR$/src/execution/operator/join/physical_iejoin.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/planner/bound_statement.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/parser/parsed_data/parse_info.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/planner/operator/logical_simple.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/main/prepared_statement_data.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/execution/physical_operator.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/planner/logical_operator.hpp" />
+      <option value="$PROJECT_DIR$/src/execution/physical_plan_generator.cpp" />
+      <option value="$PROJECT_DIR$/src/execution/physical_plan/plan_simple.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/execution/operator/helper/physical_transaction.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/main/pending_query_result.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/execution/executor.hpp" />
+      <option value="$PROJECT_DIR$/examples/embedded-c++/main.cpp" />
+      <option value="$PROJECT_DIR$/src/main/client_context.cpp" />
+      <option value="$PROJECT_DIR$/src/main/pending_query_result.cpp" />
+      <option value="$PROJECT_DIR$/src/parallel/meta_pipeline.cpp" />
+      <option value="$PROJECT_DIR$/src/execution/physical_operator.cpp" />
+      <option value="$PROJECT_DIR$/src/parallel/executor.cpp" />
+      <option value="$PROJECT_DIR$/third_party/libpg_query/CMakeLists.txt" />
+      <option value="$PROJECT_DIR$/examples/embedded-c++/CMakeLists.txt" />
+      <option value="$PROJECT_DIR$/src/parser/transform/statement/transform_select.cpp" />
+      <option value="$PROJECT_DIR$/third_party/libpg_query/include/nodes/parsenodes.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/parser/query_node.hpp" />
+      <option value="$PROJECT_DIR$/src/parser/transform/tableref/transform_base_tableref.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/query_node/bind_select_node.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/query_node/plan_select_node.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/tableref/bind_basetableref.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/operator/logical_get.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/planner/operator/logical_get.hpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/execution/operator/scan/physical_table_scan.hpp" />
+      <option value="$PROJECT_DIR$/src/execution/operator/scan/physical_table_scan.cpp" />
+      <option value="$PROJECT_DIR$/src/function/table_function.cpp" />
+      <option value="$PROJECT_DIR$/src/include/duckdb/function/table_function.hpp" />
+      <option value="$PROJECT_DIR$/src/parser/transform/statement/transform_select_node.cpp" />
+      <option value="$PROJECT_DIR$/src/planner/binder/tableref/plan_basetableref.cpp" />
+      <option value="$PROJECT_DIR$/src/parser/transform/helpers/transform_sample.cpp" />
+    </changedPaths>
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="LanguageUsageStatistics">
+    <language id="ASM">
+      <summary usageCount="1" lastUsage="1672897318669" />
+    </language>
+    <language id="CMake">
+      <summary usageCount="33" lastUsage="1676248955454" />
+    </language>
+    <language id="Makefile">
+      <summary usageCount="1" lastUsage="1672883359313" />
+    </language>
+    <language id="Markdown">
+      <summary usageCount="2" lastUsage="1672975411019" />
+    </language>
+    <language id="ObjectiveC">
+      <summary usageCount="284" lastUsage="1676248955545" />
+    </language>
+    <language id="TEXT">
+      <summary usageCount="9" lastUsage="1672984908645" />
+    </language>
+    <language id="textmate">
+      <summary usageCount="3" lastUsage="1672975528471" />
+    </language>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="embedded-c++" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="third_party" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DuckDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="duckdb" type="462c0819:PsiDirectoryNode" />
+              <item name="third_party" type="462c0819:PsiDirectoryNode" />
+              <item name="libpg_query" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="RunConfigurationStartHistory">
+    <history>
+      <element setting="CMake Application.example" executorId="Debug" />
+    </history>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",QUALIFIED_NAMES" />
+  </component>
+  <component name="TerminalArrangementManager">
+    <option name="myTabStates">
+      <TerminalTabState tabName="Local" commandHistoryFileName="DuckDB-history" />
+    </option>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="61726000" />
+  </component>
+  <component name="ToolWindowManager">
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.24458662" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" show_stripe_button="false" weight="0.29576772" />
+      <window_info anchor="bottom" id="TODO" order="4" />
+      <window_info anchor="bottom" id="CMake" order="5" weight="0.33021653" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="Problems View" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.33021653" />
+      <window_info anchor="bottom" id="Services" order="9" />
+      <window_info anchor="bottom" id="Commit" order="10" />
+      <window_info active="true" anchor="bottom" x="644" y="158" width="200" height="922" id="Structure" order="11" type="FLOATING" />
+      <window_info anchor="bottom" id="Notifications" order="12" weight="0.25049213" />
+      <window_info anchor="bottom" id="Messages" order="13" weight="0.33045214" />
+      <window_info anchor="bottom" id="Database" order="14" />
+      <window_info anchor="right" id="make" order="0" show_stripe_button="false" side_tool="true" />
+      <window_info anchor="right" id="Bookmarks" order="1" weight="0.26488096" />
+    </layout>
+    <recentWindows>
+      <value>Bookmarks</value>
+      <value>Project</value>
+      <value>Debug</value>
+      <value>Messages</value>
+      <value>Version Control</value>
+      <value>Terminal</value>
+      <value>Notifications</value>
+      <value>Structure</value>
+      <value>CMake</value>
+    </recentWindows>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="857" height="319" key="DebuggerActiveHint" timestamp="1672898167790">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="857" height="319" key="DebuggerActiveHint/72.27.1848.1053@72.27.1848.1053" timestamp="1672898167790" />
+    <state x="784" y="308" key="FileChooserDialogImpl" timestamp="1672974683886">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="784" y="308" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1672974683886" />
+    <state width="1804" height="272" key="GridCell.Tab.0.bottom" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.0.center" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.0.left" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.0.right" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.1.bottom" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.1.center" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.1.left" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.1.right" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.2.bottom" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.2.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.2.center" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.2.center/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.2.left" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.2.left/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state width="1804" height="272" key="GridCell.Tab.2.right" timestamp="1673503196969">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state width="1804" height="272" key="GridCell.Tab.2.right/72.27.1848.1053@72.27.1848.1053" timestamp="1673503196969" />
+    <state x="490" y="185" key="SettingsEditor" timestamp="1673138396819">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="490" y="185" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1673138396819" />
+    <state x="751" y="162" width="973" height="722" key="find.popup" timestamp="1673062384649">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="751" y="162" width="973" height="722" key="find.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1673062384649" />
+    <state x="659" y="259" width="672" height="686" key="search.everywhere.popup" timestamp="1673421723780">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="659" y="259" width="672" height="686" key="search.everywhere.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1673421723780" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>(*PGNode)(res-&gt;parse_tree-&gt;head-&gt;data.ptr_value)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/parser/transform/tableref/transform_tableref.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/transform/tableref/transform_base_tableref.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/planner.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="44" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_statement.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3077">
+          <caret line="181" column="27" selection-start-line="181" selection-start-column="27" selection-end-line="181" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/tableref/plan_basetableref.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/query_node/plan_select_node.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/tableref/bind_basetableref.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2159">
+          <caret line="127" column="51" selection-start-line="127" selection-start-column="51" selection-end-line="127" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/operator/logical_get.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="14" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/logical_operator.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/logical_operator_type.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/execution/physical_operator.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2941">
+          <caret line="173" column="40" selection-start-line="173" selection-start-column="40" selection-end-line="173" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/execution/operator/scan/physical_table_scan.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/execution/operator/scan/physical_table_scan.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="84" column="15" selection-start-line="84" selection-start-column="15" selection-end-line="84" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/function/table_function.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="171" column="29" selection-start-line="171" selection-start-column="29" selection-end-line="171" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/function/table_function.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/types/data_chunk.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/operator/logical_get.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="75" selection-start-line="16" selection-start-column="75" selection-end-line="16" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/tableref/bound_basetableref.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_tableref.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/helper.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="46" column="14" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/catalog/catalog.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="75" column="15" selection-start-line="75" selection-start-column="15" selection-end-line="75" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/catalog_type.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/catalog/catalog.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/database.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3672">
+          <caret line="216" column="19" selection-start-line="216" selection-start-column="19" selection-end-line="216" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/main/database.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1258">
+          <caret line="74" column="23" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/catalog/catalog_entry/schema_catalog_entry.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="6" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/query_node/bind_select_node.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5593">
+          <caret line="329" column="41" selection-start-line="329" selection-start-column="41" selection-end-line="329" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/query_node/bound_select_node.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/planner/bound_query_node.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/statement/bind_select.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/enums/statement_type.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/planner/binder/statement/bind_simple.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="85" selection-start-line="37" selection-start-column="85" selection-end-line="37" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/exception.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3434">
+          <caret line="202" column="47" selection-start-line="202" selection-start-column="47" selection-end-line="202" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/common/winapi.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/exception.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4726">
+          <caret line="278" column="25" selection-start-line="278" selection-start-column="25" selection-end-line="278" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/9/bits/exception.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="60" column="3" selection-start-line="60" selection-start-column="3" selection-end-line="60" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/third_party/catch/catch.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66827">
+          <caret line="3931" column="16" selection-start-line="3931" selection-start-column="16" selection-end-line="3931" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/primnodes.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1258">
+          <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="74" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/transformer.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1411">
+          <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/statement/select_statement.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+          <folding>
+            <element signature="e#268#310#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/query_node.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/query_node/select_node.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/tableref.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="30" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/tableref/basetableref.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/duckdb/parser/sql_statement.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/nodes.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2448">
+          <caret line="144" column="4" selection-start-line="144" selection-start-column="4" selection-end-line="144" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/third_party/libpg_query/include/nodes/parsenodes.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18853">
+          <caret line="1109" column="16" selection-start-line="1109" selection-start-column="16" selection-end-line="1109" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1054">
+          <caret line="62" column="22" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/transform/helpers/transform_sample.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

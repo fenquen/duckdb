@@ -12,7 +12,7 @@ BoundStatement Binder::Bind(LogicalPlanStatement &stmt) {
 	}
 	result.plan = move(stmt.plan);
 	properties.allow_stream_result = true;
-	properties.return_type = StatementReturnType::QUERY_RESULT; // TODO could also be something else
+	properties.statementReturnType = StatementReturnType::QUERY_RESULT; // TODO could also be something else
 
 	return result;
 }

@@ -149,7 +149,7 @@ BoundStatement Binder::Bind(InsertStatement &stmt) {
 	D_ASSERT(result.types.size() == result.names.size());
 	result.plan = move(insert);
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::CHANGED_ROWS;
+	properties.statementReturnType = StatementReturnType::CHANGED_ROWS;
 	return result;
 }
 

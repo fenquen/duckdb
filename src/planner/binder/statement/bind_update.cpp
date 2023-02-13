@@ -241,7 +241,7 @@ BoundStatement Binder::Bind(UpdateStatement &stmt) {
 	result.types = {LogicalType::BIGINT};
 	result.plan = move(update);
 	properties.allow_stream_result = false;
-	properties.return_type = StatementReturnType::CHANGED_ROWS;
+	properties.statementReturnType = StatementReturnType::CHANGED_ROWS;
 	return result;
 }
 
